@@ -1,4 +1,6 @@
 # openHPI Monitoring Frontend
+![alt text](https://img.shields.io/travis/com/openHPI/monitoring-frontend.svg "Travis Build") 
+
 Frontend service for the openHPI monitoring dashboard.
 
 ## Deployment
