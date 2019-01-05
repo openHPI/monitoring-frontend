@@ -5,7 +5,11 @@ Frontend service for the openHPI monitoring dashboard.
 
 ## Deployment
 
-1. Download the <a href="https://github.com/openHPI/monitoring-frontend/blob/master/docker-compose.yml" download>docker-compose.yml</a>.
+1. Clone the repository
+    ```
+    git clone https://github.com/openHPI/monitoring-frontend
+    cd monitoring-frontend
+    ```
 
 1. Deploy the service using docker compose / stack: 
   ```docker-compose up``` or ```docker stack -c docker-compose.yml```.
