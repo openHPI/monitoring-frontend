@@ -3,4 +3,14 @@ services:
     monitoring-frontend:
         image: friedow/monitoring-frontend:latest
         ports:
-            - 3000:8080
+            - 8081:8080
+    monitoring-backend:
+        image: friedow/monitoring-backend:latest
+        ports:
+            - 8082:3000
+    kapacitor:
+        image: kapacitor:latest
+        ports:
+            - 9092:9092
+        volumes:
+            - $PWD/config/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
