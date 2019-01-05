@@ -12,7 +12,7 @@ Frontend service for the openHPI monitoring dashboard.
     ```
 
 1. Deploy the service using docker compose / stack: 
-  ```docker-compose up``` or ```docker stack -c docker-compose.yml```.
+  ```docker-compose up``` or ```docker stack deploy -c docker-compose.yml monitoring-dashboard```.
 
 ## Development
 
