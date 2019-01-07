@@ -14,3 +14,5 @@ services:
             - 9092:9092
         volumes:
             - $PWD/config/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
+            - $PWD/config/kapacitor:/home/kapacitor
+            - /var/log/kapacitor:/var/log/kapacitor
