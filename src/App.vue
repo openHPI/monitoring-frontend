@@ -34,3 +34,20 @@ export default class App extends Vue {
   // endregion
 }
 </script>
+
+<style lang="less">
+
+html, body, #app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+    display: grid;
+    grid-template-rows: 60px auto;
+}
+
+</style>
