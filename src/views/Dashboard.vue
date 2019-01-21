@@ -1,25 +1,38 @@
 <template>
   <div class="dashboard-grid">
-    <div class="subject-tile">
-      Frontend
-    </div>
-    <div class="subject-tile">
-      Backend
-    </div>
-    <div class="subject-tile">
-      Network
-    </div>
-    <div class="subject-tile">
-      Hardware
-    </div>
+    <SubjectTile
+      title="Frontend"
+      icon="window-maximize" />
+
+    <SubjectTile
+      title="Backend"
+      icon="code" />
+
+    <SubjectTile
+      title="Network"
+      icon="server" />
+
+    <SubjectTile
+      title="Hardware"
+      icon="network-wired" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import SubjectTile from '@/components/SubjectTile.vue';
 
-@Component
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faWindowMaximize, faCode, faServer, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
+
+@Component({
+  components: {
+    SubjectTile,
+  },
+})
 export default class Dashboard extends Vue {
   // region public members
   // endregion
@@ -47,6 +60,7 @@ export default class Dashboard extends Vue {
 
 .dashboard-grid {
   height: 100%;
+
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
@@ -56,19 +70,5 @@ export default class Dashboard extends Vue {
 
   background-color: #363533;
 }
-
-.subject-tile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #58B050;
-  border-radius: 20px;
-
-  font-family: Arial;
-  font-size: 40px;
-  color: white;
-}
-
 
 </style>
