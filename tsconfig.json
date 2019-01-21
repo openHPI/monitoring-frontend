@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "lib": ["es6", "dom", "es7"],
     "types": [
       "node"
     ],

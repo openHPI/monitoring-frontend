@@ -10,10 +10,10 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 
 export enum STATUS {
-    'OK'='#58B050',
-    'INFO'='#000000', 
-    'WARNING'='#B2B051', 
-    'CRITICAL'='#B0544D',
+    'OK' = '#58B050',
+    'INFO' = '#000000',
+    'WARNING' = '#B2B051',
+    'CRITICAL' = '#B0544D',
 }
 
 @Component({
@@ -24,9 +24,9 @@ export enum STATUS {
     // https://docs.influxdata.com/kapacitor/v1.5/working/alerts/#alert-event-data
     status: {
         type: String,
-        validator: (status) =>  ['OK', 'INFO', 'WARNING', 'CRITICAL'].includes(status)
-    }
-  }
+        validator: (status: string) =>  ['OK', 'INFO', 'WARNING', 'CRITICAL'].includes(status),
+    },
+  },
 })
 export default class SubjectTile extends Vue {
   // region public members

@@ -23,7 +23,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import SubjectTile from '@/components/SubjectTile.vue';
 
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { faWindowMaximize, faCode, faServer, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
@@ -48,7 +48,11 @@ export default class Dashboard extends Vue {
 
   // region private methods
   private mounted() {
-    // use this like componentDidMount() in react
+    this.fetchEvents();
+  }
+
+  private async fetchEvents(): Promise<void> {
+    const alerts = await fetch('http://82.140.0.78:8082/alerts/');
   }
   // endregion
 }
