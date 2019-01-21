@@ -9,7 +9,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Header from '@/components/Header.vue';
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.config.productionTip = false;
 
 @Component({
   components: {
