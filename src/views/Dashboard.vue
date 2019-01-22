@@ -14,7 +14,8 @@
 
     <SubjectTile
       title="Hardware"
-      icon="network-wired" />
+      icon="network-wired"
+      :status="alertLevel" />
   </div>
 </template>
 
@@ -25,6 +26,7 @@ import SubjectTile from '@/components/SubjectTile.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faWindowMaximize, faCode, faServer, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
+import Alert from '@/interfaces/Alert';
 
 library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
 
@@ -38,6 +40,7 @@ export default class Dashboard extends Vue {
   // endregion
 
   // region public methods
+  public alertLevel: string = 'OK';
   // endregion
 
   // region private members
@@ -48,11 +51,17 @@ export default class Dashboard extends Vue {
 
   // region private methods
   private mounted() {
-    this.fetchEvents();
+    this.fetchAlerts();
   }
 
-  private async fetchEvents(): Promise<void> {
-    const alerts = await fetch('http://82.140.0.78:8082/alerts/');
+  private async fetchAlerts(): Promise<void> {
+    const response = await fetch('http://82.140.0.78:8082/alerts/');
+    const alerts: Alert[] = await response.json();
+    const alert = alerts.pop();
+    if (alert) {
+      this.alertLevel = alert.level;
+      console.log(alert.level);
+    }
   }
   // endregion
 }
