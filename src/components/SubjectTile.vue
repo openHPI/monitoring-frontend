@@ -1,19 +1,24 @@
 <template>
-    <div class="subject-tile" :style="{ 'background-color': backgroundColor }">
-        <font-awesome-icon :icon="icon" class="tile-icon" />
-        <h2 class="tile-headline">{{title}}</h2>
-    </div>
+  <div class="subject-tile" :style="{ 'background-color': backgroundColor }">
+    <font-awesome-icon :icon="icon" class="tile-icon"/>
+    <h2 class="tile-headline">{{title}}</h2>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Watch } from 'vue-property-decorator'
 
-export enum STATUS {
-    'OK' = '#58B050',
-    'INFO' = '#000000',
-    'WARNING' = '#B2B051',
-    'CRITICAL' = '#B0544D',
+interface States {
+    [prop: string]: string;
+}
+
+const states: States = {
+    OK: '#58B050',
+    INFO: '#000000',
+    WARNING: '#B2B051',
+    CRITICAL: '#B0544D',
 }
 
 @Component({
@@ -30,7 +35,7 @@ export enum STATUS {
 })
 export default class SubjectTile extends Vue {
   // region public members
-  public backgroundColor: string = STATUS.OK;
+  public backgroundColor: string = states['OK'];
   // endregion
 
   // region public methods
@@ -40,18 +45,30 @@ export default class SubjectTile extends Vue {
   // endregion
 
   // region constructor
+  constructor() {
+      super();
+      
+  }
   // endregion
 
   // region private methods
   private mounted() {
+    if (this.$props.status) {
+        this.backgroundColor = states[this.$props.status];
+    }
     // use this like componentDidMount() in react
+  }
+
+  @Watch('status')
+  public onStatusChanged(val: string, oldVal: string) {
+      console.log(`Status changed: ${val}`)
+      this.backgroundColor = states[val]
   }
   // endregion
 }
 </script>
 
 <style lang="less">
-
 .subject-tile {
   display: flex;
   align-items: center;
@@ -71,8 +88,6 @@ export default class SubjectTile extends Vue {
 }
 
 .tile-headline {
-
   margin: 25px 0 0 0;
 }
-
 </style>
