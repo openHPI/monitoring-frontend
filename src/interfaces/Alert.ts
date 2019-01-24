@@ -33,7 +33,7 @@ export default interface Alert {
                 [key: string]: string;
             };
             columns: string[];
-            values: Array<string[]>;
+            values: string[];
         };
     };
     recoverable: boolean;

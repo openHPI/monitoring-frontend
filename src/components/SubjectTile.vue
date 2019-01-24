@@ -8,7 +8,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Watch } from 'vue-property-decorator'
+import { Watch } from 'vue-property-decorator';
 
 interface States {
     [prop: string]: string;
@@ -19,7 +19,7 @@ const states: States = {
     INFO: '#000000',
     WARNING: '#B2B051',
     CRITICAL: '#B0544D',
-}
+};
 
 @Component({
   props: {
@@ -35,10 +35,7 @@ const states: States = {
 })
 export default class SubjectTile extends Vue {
   // region public members
-  public backgroundColor: string = states['OK'];
-  // endregion
-
-  // region public methods
+  public backgroundColor: string = states.OK;
   // endregion
 
   // region private members
@@ -46,23 +43,25 @@ export default class SubjectTile extends Vue {
 
   // region constructor
   constructor() {
-      super();
-      
+    super();
+  }
+  // endregion
+
+  // region public methods
+  @Watch('status')
+  public onStatusChanged(val: string, oldVal: string) {
+    // tslint:disable-next-line:no-console
+    console.log(`Status changed: ${val}`);
+    this.backgroundColor = states[val];
   }
   // endregion
 
   // region private methods
   private mounted() {
     if (this.$props.status) {
-        this.backgroundColor = states[this.$props.status];
+      this.backgroundColor = states[this.$props.status];
     }
     // use this like componentDidMount() in react
-  }
-
-  @Watch('status')
-  public onStatusChanged(val: string, oldVal: string) {
-      console.log(`Status changed: ${val}`)
-      this.backgroundColor = states[val]
   }
   // endregion
 }

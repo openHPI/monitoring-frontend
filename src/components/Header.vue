@@ -13,13 +13,13 @@ export default class Header extends Vue {
   // region public members
   // endregion
 
-  // region public methods
-  // endregion
-
   // region private members
   // endregion
 
   // region constructor
+  // endregion
+
+  // region public methods
   // endregion
 
   // region private methods

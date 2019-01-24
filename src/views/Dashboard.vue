@@ -37,9 +37,6 @@ library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
 })
 export default class Dashboard extends Vue {
   // region public members
-  // endregion
-
-  // region public methods
   public alertLevel: string = 'OK';
   // endregion
 
@@ -47,6 +44,9 @@ export default class Dashboard extends Vue {
   // endregion
 
   // region constructor
+  // endregion
+
+  // region public methods
   // endregion
 
   // region private methods
@@ -60,6 +60,7 @@ export default class Dashboard extends Vue {
     const alert = alerts.pop();
     if (alert) {
       this.alertLevel = alert.level;
+      // tslint:disable-next-line:no-console
       console.log(alert.level);
     }
   }
