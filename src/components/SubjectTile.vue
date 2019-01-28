@@ -1,6 +1,6 @@
 <template>
   <div class="subject-tile" :style="{ 'background-color': backgroundColor }">
-    <font-awesome-icon :icon="icon" class="tile-icon"/>
+    <object class="tile-icon" :data="'img/' + icon + '.svg'" type="image/svg+xml"/>
     <h2 class="tile-headline">{{title}}</h2>
   </div>
 </template>
@@ -77,16 +77,16 @@ export default class SubjectTile extends Vue {
   //background-color: #58B050;
   border-radius: 20px;
 
-  font-family: Arial;
   font-size: 40px;
+  font-weight: 600;
   color: white;
 }
 
 .tile-icon {
-  font-size: 60px;
+  height: 200px;
 }
 
 .tile-headline {
-  margin: 25px 0 0 0;
+  margin: 20px 0 0 0;
 }
 </style>
