@@ -40,9 +40,11 @@ export default class App extends Vue {
 </script>
 
 <style lang="less">
+@import (css) url('https://fonts.googleapis.com/css?family=Montserrat:400,600');
 
 html, body, #app {
   height: 100%;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
