@@ -2,19 +2,19 @@
   <div class="dashboard-grid">
     <SubjectTile
       title="Frontend"
-      icon="window-maximize" />
+      icon="frontend" />
 
     <SubjectTile
       title="Backend"
-      icon="code" />
+      icon="backend" />
 
     <SubjectTile
       title="Network"
-      icon="server" />
+      icon="network" />
 
     <SubjectTile
       title="Hardware"
-      icon="network-wired"
+      icon="hardware"
       :status="alertLevel" />
   </div>
 </template>
