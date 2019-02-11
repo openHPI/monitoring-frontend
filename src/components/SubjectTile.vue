@@ -1,8 +1,8 @@
 <template>
-  <div class="subject-tile" :style="{ 'background-color': backgroundColor }">
-    <object class="tile-icon" :data="'img/' + icon + '.svg'" type="image/svg+xml"/>
+  <router-link to="/hardware/events" class="subject-tile" :style="{ 'background-color': backgroundColor }" >
+    <img class="tile-icon" :src="'img/' + icon + '.svg'" />
     <h2 class="tile-headline">{{title}}</h2>
-  </div>
+  </router-link>
 </template>
 
 <script lang="ts">
@@ -49,9 +49,7 @@ export default class SubjectTile extends Vue {
 
   // region public methods
   @Watch('status')
-  public onStatusChanged(val: string, oldVal: string) {
-    // tslint:disable-next-line:no-console
-    console.log(`Status changed: ${val}`);
+  public onStatusChanged(val: string) {
     this.backgroundColor = states[val];
   }
   // endregion

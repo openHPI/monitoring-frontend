@@ -1,21 +1,24 @@
 <template>
-  <div class="dashboard-grid">
-    <SubjectTile
-      title="Frontend"
-      icon="frontend" />
+  <div class="dashboard">
+    <Header title="OpenHPI Dashboard" />
+    <main class="dashboard-grid">
+      <SubjectTile
+        title="Frontend"
+        icon="frontend" />
 
-    <SubjectTile
-      title="Backend"
-      icon="backend" />
+      <SubjectTile
+        title="Backend"
+        icon="backend" />
 
-    <SubjectTile
-      title="Network"
-      icon="network" />
+      <SubjectTile
+        title="Network"
+        icon="network" />
 
-    <SubjectTile
-      title="Hardware"
-      icon="hardware"
-      :status="alertLevel" />
+      <SubjectTile
+        title="Hardware"
+        icon="hardware"
+        :status="alertLevel" />
+    </main>
   </div>
 </template>
 
@@ -23,6 +26,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import SubjectTile from '@/components/SubjectTile.vue';
+import Header from '@/components/Header.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faWindowMaximize, faCode, faServer, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
@@ -33,6 +37,7 @@ library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
 @Component({
   components: {
     SubjectTile,
+    Header
   },
 })
 export default class Dashboard extends Vue {
@@ -71,6 +76,13 @@ export default class Dashboard extends Vue {
 <style lang="less">
 
 @spacing: 60px;
+
+.dashboard {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 120px auto;
+  background-color: #363533;
+}
 
 .dashboard-grid {
   height: 100%;
