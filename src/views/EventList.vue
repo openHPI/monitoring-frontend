@@ -1,6 +1,6 @@
 <template>
   <div class="alerts">
-    <Header title="Hardware" />
+    <Header :title="category" />
     <main>
       <ul class="alert-list">
         <li 
@@ -75,7 +75,6 @@ export default class EventList extends Vue {
         backgroundColor: ColorUtil.getColor(event.state.level),
       };
     });
-    ColorUtil.colors
     this.alerts = events.sort((a: Alert, b: Alert) => ColorUtil.states[b.level] - ColorUtil.states[a.level]);
   }
   // endregion
@@ -121,6 +120,7 @@ main {
 
 .alert-message {
   font-size: 30px;
+  word-break: break-all;
 }
 
 .alert-date {
