@@ -44,17 +44,6 @@ header {
     grid-template-columns: 85px auto 85px;
 }
 
-#credits {
-    float: right;
-    margin: 21px 21px 0 0;
-    font-size: 12px;
-}
-
-#credits, a {
-    color: gray;
-    text-decoration: none;
-}
-
 .header-icon {
     max-height: 100%;
 }
