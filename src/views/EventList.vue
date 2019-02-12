@@ -9,12 +9,12 @@
           class="alert" 
           :style="{ 'background-color': alert.backgroundColor }">
           <div class="icon-container">
-            <img class="icon" :src="'img/hardware.svg'" />
+            <img class="icon" :src="`img/${category}.svg`" />
           </div>
           <div class="alert-message">{{ alert.message }}</div>
           <div class="alert-date">{{ alert.time }}</div>
           <div class="icon-container">
-            <img class="icon" :src="'img/down-arrow.svg'" />
+            <img class="icon" src="img/down-arrow.svg" />
           </div>
         </li>
       </ul>
@@ -36,12 +36,12 @@ interface Alert {
   time: string;
   level: string;
   backgroundColor: string;
-};
+}
 
 @Component({
   components: {
     Header,
-  }
+  },
 })
 export default class EventList extends Vue {
   // region public members

@@ -40,7 +40,6 @@ export default class SubjectTile extends Vue {
   // region public methods
   @Watch('status')
   public onStatusChanged(val: string) {
-    console.log(`status change: ${val}`)
     this.backgroundColor = ColorUtil.getColor(val);
   }
   // endregion

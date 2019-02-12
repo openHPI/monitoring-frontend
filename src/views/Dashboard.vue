@@ -27,7 +27,7 @@ library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
 @Component({
   components: {
     SubjectTile,
-    Header
+    Header,
   },
 })
 export default class Dashboard extends Vue {
@@ -74,11 +74,10 @@ export default class Dashboard extends Vue {
   private async updateAlertLevels(): Promise<void> {
     const response = await fetch('http://82.140.0.78:9092/kapacitor/v1/alerts/topics');
     const topics = await response.json();
-    const topicTags = this.tiles.map(tile => tile.tag);
+    const topicTags = this.tiles.map((tile) => tile.tag);
     const tileTopics = topics.topics.filter((topic: any) => topicTags.includes(topic.id));
     tileTopics.forEach((tileTopic: any) => {
-      const tileId = this.tiles.findIndex(tile => tile.tag === tileTopic.id);
-      console.log(`${tileTopic.id}: ${tileId}`);
+      const tileId = this.tiles.findIndex((tile) => tile.tag === tileTopic.id);
       this.tiles[tileId].alertLevel = tileTopic.level;
     });
   }
