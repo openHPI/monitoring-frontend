@@ -2,7 +2,7 @@
   <div class="dashboard">
     <Header title="OpenHPI Dashboard" />
     <main class="dashboard-grid">
-      <SubjectTile
+      <TopicTile
         v-for="topic in topics"
         :key="topic.title"
         :title="topic.title"
@@ -16,7 +16,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Header from '@/components/Header.vue';
-import SubjectTile from '@/components/SubjectTile.vue';
+import TopicTile from '@/components/TopicTile.vue';
 
 import KapacitorApi from '@/apis/KapacitorApi';
 
@@ -24,7 +24,7 @@ import Alert from '@/interfaces/Alert';
 
 @Component({
   components: {
-    SubjectTile,
+    TopicTile,
     Header,
   },
 })

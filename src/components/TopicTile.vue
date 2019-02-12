@@ -23,7 +23,7 @@ import ColorUtil from '@/utils/ColorUtil.ts';
     },
   },
 })
-export default class SubjectTile extends Vue {
+export default class TopicTile extends Vue {
   // region public members
   // endregion
 
