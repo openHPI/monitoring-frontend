@@ -3,21 +3,11 @@
     <Header title="OpenHPI Dashboard" />
     <main class="dashboard-grid">
       <SubjectTile
-        title="Frontend"
-        icon="frontend" />
-
-      <SubjectTile
-        title="Backend"
-        icon="backend" />
-
-      <SubjectTile
-        title="Network"
-        icon="network" />
-
-      <SubjectTile
-        title="Hardware"
-        icon="hardware"
-        :status="alertLevel" />
+        v-for="tile in tiles"
+        :key="tile.title"
+        :title="tile.title"
+        :icon="tile.tag"
+        :status="tile.alertLevel" />
     </main>
   </div>
 </template>
@@ -43,6 +33,28 @@ library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
 export default class Dashboard extends Vue {
   // region public members
   public alertLevel: string = 'OK';
+  public tiles = [
+    {
+      title: 'Frontend',
+      tag: 'frontend',
+      alertLevel: 'OK',
+    },
+    {
+      title: 'Backend',
+      tag: 'backend',
+      alertLevel: 'OK',
+    },
+    {
+      title: 'Network',
+      tag: 'network',
+      alertLevel: 'OK',
+    },
+    {
+      title: 'Hardware',
+      tag: 'hardware',
+      alertLevel: 'OK',
+    },
+  ];
   // endregion
 
   // region private members
@@ -56,18 +68,19 @@ export default class Dashboard extends Vue {
 
   // region private methods
   private mounted() {
-    this.fetchAlerts();
+    this.updateAlertLevels();
   }
 
-  private async fetchAlerts(): Promise<void> {
-    const response = await fetch('http://82.140.0.78:8082/alerts/');
-    const alerts: Alert[] = await response.json();
-    const alert = alerts.pop();
-    if (alert) {
-      this.alertLevel = alert.level;
-      // tslint:disable-next-line:no-console
-      console.log(alert.level);
-    }
+  private async updateAlertLevels(): Promise<void> {
+    const response = await fetch('http://82.140.0.78:9092/kapacitor/v1/alerts/topics');
+    const topics = await response.json();
+    const topicTags = this.tiles.map(tile => tile.tag);
+    const tileTopics = topics.topics.filter((topic: any) => topicTags.includes(topic.id));
+    tileTopics.forEach((tileTopic: any) => {
+      const tileId = this.tiles.findIndex(tile => tile.tag === tileTopic.id);
+      console.log(`${tileTopic.id}: ${tileId}`);
+      this.tiles[tileId].alertLevel = tileTopic.level;
+    });
   }
   // endregion
 }
