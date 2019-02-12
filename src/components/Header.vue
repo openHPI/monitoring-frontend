@@ -39,7 +39,8 @@ export default class Header extends Vue {
 header {
     background-color: rgba(54, 53, 51, 0.95);
     padding: 30px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 85px auto 85px;
 }
 
 #credits {
@@ -59,5 +60,7 @@ header {
 
 .header-title {
     color: white;
+    text-align: center;
+    text-transform: capitalize;
 }
 </style>
