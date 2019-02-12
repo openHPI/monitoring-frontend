@@ -3,11 +3,11 @@
     <Header title="OpenHPI Dashboard" />
     <main class="dashboard-grid">
       <SubjectTile
-        v-for="tile in tiles"
-        :key="tile.title"
-        :title="tile.title"
-        :icon="tile.tag"
-        :status="tile.alertLevel" />
+        v-for="topic in topics"
+        :key="topic.title"
+        :title="topic.title"
+        :icon="topic.tag"
+        :status="topic.alertLevel" />
     </main>
   </div>
 </template>
@@ -15,8 +15,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import SubjectTile from '@/components/SubjectTile.vue';
 import Header from '@/components/Header.vue';
+import SubjectTile from '@/components/SubjectTile.vue';
+
+import KapacitorApi from '@/apis/KapacitorApi';
+
 import Alert from '@/interfaces/Alert';
 
 @Component({
@@ -27,8 +30,10 @@ import Alert from '@/interfaces/Alert';
 })
 export default class Dashboard extends Vue {
   // region public members
-  public alertLevel: string = 'OK';
-  public tiles = [
+  // endregion
+
+  // region private members
+  private topics = [
     {
       title: 'Frontend',
       tag: 'frontend',
@@ -52,9 +57,6 @@ export default class Dashboard extends Vue {
   ];
   // endregion
 
-  // region private members
-  // endregion
-
   // region constructor
   // endregion
 
@@ -67,13 +69,8 @@ export default class Dashboard extends Vue {
   }
 
   private async updateAlertLevels(): Promise<void> {
-    const response = await fetch('http://82.140.0.78:9092/kapacitor/v1/alerts/topics');
-    const topics = await response.json();
-    const topicTags = this.tiles.map((tile) => tile.tag);
-    const tileTopics = topics.topics.filter((topic: any) => topicTags.includes(topic.id));
-    tileTopics.forEach((tileTopic: any) => {
-      const tileId = this.tiles.findIndex((tile) => tile.tag === tileTopic.id);
-      this.tiles[tileId].alertLevel = tileTopic.level;
+    this.topics.forEach((topic) => {
+      KapacitorApi.alertLevel(topic.tag).then((alertLevel) => topic.alertLevel = alertLevel);
     });
   }
   // endregion

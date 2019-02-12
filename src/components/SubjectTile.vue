@@ -9,7 +9,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import ColorUtil from '@/util/ColorUtil.ts';
+import ColorUtil from '@/utils/ColorUtil.ts';
 
 @Component({
   props: {

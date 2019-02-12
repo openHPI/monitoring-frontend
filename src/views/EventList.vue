@@ -27,8 +27,8 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import Header from '@/components/Header.vue';
 import KapacitorAlert from '@/interfaces/Alert.ts';
-import DateUtil from '@/util/DateUtil.ts';
-import ColorUtil from '@/util/ColorUtil.ts';
+import DateUtil from '@/utils/DateUtil.ts';
+import ColorUtil from '@/utils/ColorUtil.ts';
 
 
 interface Alert {
