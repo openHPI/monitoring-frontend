@@ -7,28 +7,28 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Watch } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
+
 import ColorUtil from '@/utils/ColorUtil.ts';
 
 @Component({
   props: {
-    icon: String,
     title: String,
+    icon: String,
     // status is the current alert level according to kapacitor:
     // https://docs.influxdata.com/kapacitor/v1.5/working/alerts/#alert-event-data
-    status: {
-        type: String,
-        validator: (status: string) =>  ['OK', 'INFO', 'WARNING', 'CRITICAL'].includes(status),
+    alertLevel: {
+      type: String,
+      validator: (status: string) =>  ['OK', 'INFO', 'WARNING', 'CRITICAL'].includes(status),
     },
   },
 })
 export default class SubjectTile extends Vue {
   // region public members
-  public backgroundColor: string = ColorUtil.colors.OK;
   // endregion
 
   // region private members
+  private backgroundColor: string = ColorUtil.colors.OK;
   // endregion
 
   // region constructor
@@ -38,19 +38,13 @@ export default class SubjectTile extends Vue {
   // endregion
 
   // region public methods
-  @Watch('status')
-  public onStatusChanged(val: string) {
-    this.backgroundColor = ColorUtil.getColor(val);
+  @Watch('alertLevel')
+  public onAlertLevelChanged(alertLevel: string) {
+    this.backgroundColor = ColorUtil.getColor(alertLevel);
   }
   // endregion
 
   // region private methods
-  private mounted() {
-    if (this.$props.status) {
-      this.backgroundColor = ColorUtil.getColor(this.$props.status);
-    }
-    // use this like componentDidMount() in react
-  }
   // endregion
 }
 </script>
@@ -62,12 +56,13 @@ export default class SubjectTile extends Vue {
   justify-content: center;
   flex-direction: column;
 
-  //background-color: #58B050;
+  background-color: grey;
   border-radius: 20px;
 
   font-size: 40px;
   font-weight: 600;
   color: white;
+  text-decoration: none;
 }
 
 .tile-icon {

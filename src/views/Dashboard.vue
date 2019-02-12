@@ -7,7 +7,7 @@
         :key="topic.title"
         :title="topic.title"
         :icon="topic.tag"
-        :status="topic.alertLevel" />
+        :alertLevel="topic.alertLevel" />
     </main>
   </div>
 </template>
