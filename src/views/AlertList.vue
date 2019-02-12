@@ -3,20 +3,13 @@
     <Header :title="topic" />
     <main>
       <ul class="alert-list">
-        <li 
+        <AlertLine 
           v-for="alert in alerts"
-          :key="alert._id"
-          class="alert" 
-          :style="{ 'background-color': alert.backgroundColor }">
-          <div class="icon-container">
-            <img class="icon" :src="`img/${topic}.svg`" />
-          </div>
-          <div class="alert-message">{{ alert.message }}</div>
-          <div class="alert-date">{{ alert.time }}</div>
-          <div class="icon-container">
-            <img class="icon" src="img/down-arrow.svg" />
-          </div>
-        </li>
+          :key="alert.topic"
+          :backgroundColor="alert.backgroundColor"
+          :message="alert.message"
+          :time="alert.time"
+          :topic="topic" />
       </ul>
     </main>
   </div>
@@ -26,23 +19,18 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Header from '@/components/Header.vue';
+import AlertLine from '@/components/AlertLine.vue';
 
-import BackendApi from '@/apis/BackendApi.ts'
+import BackendApi from '@/apis/BackendApi.ts';
 import DateUtil from '@/utils/DateUtil.ts';
 import ColorUtil from '@/utils/ColorUtil.ts';
 
-import Event from '@/interfaces/Event.ts';
-
-interface Alert {
-  message: string;
-  time: string;
-  level: string;
-  backgroundColor: string;
-}
+import Alert from '@/interfaces/Alert.ts';
 
 @Component({
   components: {
     Header,
+    AlertLine,
   },
 })
 export default class AlertList extends Vue {
@@ -102,34 +90,6 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.alert {
-  background-color: grey;
-  margin: 15px 30px;
-  border-radius: 20px;
-  display: grid;
-  grid-template-columns: 130px auto 200px 100px;
-}
-
-.alert > * {
-  color: white;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.alert-message {
-  font-size: 30px;
-  word-break: break-all;
-}
-
-.alert-date {
-  font-size: 25px;
-}
-
-.icon {
-  max-width: 100%;
 }
 
 </style>

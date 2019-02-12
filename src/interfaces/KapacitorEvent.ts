@@ -1,4 +1,4 @@
-export default interface Event {
+export default interface KapacitorEvent {
     link: {
         rel: string;
         href: string;

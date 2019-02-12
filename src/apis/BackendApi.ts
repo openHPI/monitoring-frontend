@@ -1,4 +1,4 @@
-import Event from '@/interfaces/Event';
+import KapacitorEvent from '@/interfaces/KapacitorEvent';
 
 export default class BackendApi {
     // region public members
@@ -11,7 +11,7 @@ export default class BackendApi {
     // endregion
 
     // region public methods
-    public static async events(topicName: string): Promise<Event[]> {
+    public static async events(topicName: string): Promise<KapacitorEvent[]> {
         const response = await fetch(`http://82.140.0.78:8082/events/${topicName}?min-level=OK`);
         const topic = await response.json();
         return topic.events;
