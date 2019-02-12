@@ -4,10 +4,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-Vue.component('font-awesome-icon', FontAwesomeIcon);
-Vue.config.productionTip = false;
 
 @Component
 

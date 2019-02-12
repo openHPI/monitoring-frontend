@@ -17,12 +17,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import SubjectTile from '@/components/SubjectTile.vue';
 import Header from '@/components/Header.vue';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faWindowMaximize, faCode, faServer, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
 import Alert from '@/interfaces/Alert';
-
-library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
 
 @Component({
   components: {
