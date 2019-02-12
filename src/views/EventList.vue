@@ -3,7 +3,11 @@
     <Header title="Hardware" />
     <main>
       <ul class="alert-list">
-        <li class="alert" v-for="alert in alerts" :key="alert._id">
+        <li 
+          v-for="alert in alerts"
+          :key="alert._id"
+          class="alert" 
+          :style="{ 'background-color': alert.backgroundColor }">
           <div class="icon-container">
             <img class="icon" :src="'img/hardware.svg'" />
           </div>
@@ -22,9 +26,17 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Header from '@/components/Header.vue';
-import Alert from '@/interfaces/Alert.ts';
 import KapacitorAlert from '@/interfaces/KapacitorAlert.ts';
 import DateUtil from '@/util/DateUtil.ts';
+import ColorUtil from '@/util/ColorUtil.ts';
+
+
+interface Alert {
+  message: string;
+  time: string;
+  level: string;
+  backgroundColor: string;
+};
 
 @Component({
   components: {
@@ -39,7 +51,8 @@ export default class EventList extends Vue {
   // endregion
 
   // region private members
-  private alerts: any[] = [];
+  private category: string = '';
+  private alerts: Alert[] = [];
   // endregion
 
   // region constructor
@@ -47,26 +60,23 @@ export default class EventList extends Vue {
 
   // region private methods
   private mounted() {
-    this.fetchAlerts(this.$route.params.category);
+    this.category = this.$route.params.category;
+    this.fetchAlerts();
   }
 
-  private async fetchAlerts(category?: string): Promise<void> {
-    const response = await fetch(`http://82.140.0.78:9092/kapacitor/v1/alerts/topics/hardware/events?min-level=OK`);
+  private async fetchAlerts(): Promise<void> {
+    const response = await fetch(`http://82.140.0.78:8082/events/${this.category}?min-level=OK`);
     const categoryJson = await response.json();
-    const events: KapacitorAlert[] = categoryJson.events.map((event: any) => {
-      event.state.details = JSON.parse(event.state.details.replace(/&#34;/g, '"'));
-      return event;
-    });
-
-    const filtered_events = events.filter((alert: KapacitorAlert) =>  alert.state.details.Level === 'CRITICAL' || alert.state.details.Level === 'WARNING');
-
-    this.alerts = filtered_events.map((event) => {
+    const events: Alert[] = categoryJson.events.map((event: KapacitorAlert) => {
       return {
         message: event.state.message,
         time: DateUtil.dateToTimeAgo(new Date(event.state.time)),
         level: event.state.level,
+        backgroundColor: ColorUtil.getColor(event.state.level),
       };
     });
+    ColorUtil.colors
+    this.alerts = events.sort((a: Alert, b: Alert) => ColorUtil.states[b.level] - ColorUtil.states[a.level]);
   }
   // endregion
 }
@@ -95,7 +105,7 @@ main {
 }
 
 .alert {
-  background-color: #B0544D;
+  background-color: grey;
   margin: 15px 30px;
   border-radius: 20px;
   display: grid;
