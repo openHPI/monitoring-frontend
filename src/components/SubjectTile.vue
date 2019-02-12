@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/hardware/events" class="subject-tile" :style="{ 'background-color': backgroundColor }" >
+  <router-link :to="'/'+ icon + '/events'" class="subject-tile" :style="{ 'background-color': backgroundColor }" >
     <img class="tile-icon" :src="'img/' + icon + '.svg'" />
     <h2 class="tile-headline">{{title}}</h2>
   </router-link>
@@ -9,17 +9,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-
-interface States {
-    [prop: string]: string;
-}
-
-const states: States = {
-    OK: '#58B050',
-    INFO: '#000000',
-    WARNING: '#B2B051',
-    CRITICAL: '#B0544D',
-};
+import ColorUtil from '@/util/ColorUtil.ts';
 
 @Component({
   props: {
@@ -35,7 +25,7 @@ const states: States = {
 })
 export default class SubjectTile extends Vue {
   // region public members
-  public backgroundColor: string = states.OK;
+  public backgroundColor: string = ColorUtil.colors.OK;
   // endregion
 
   // region private members
@@ -50,14 +40,15 @@ export default class SubjectTile extends Vue {
   // region public methods
   @Watch('status')
   public onStatusChanged(val: string) {
-    this.backgroundColor = states[val];
+    console.log(`status change: ${val}`)
+    this.backgroundColor = ColorUtil.getColor(val);
   }
   // endregion
 
   // region private methods
   private mounted() {
     if (this.$props.status) {
-      this.backgroundColor = states[this.$props.status];
+      this.backgroundColor = ColorUtil.getColor(this.$props.status);
     }
     // use this like componentDidMount() in react
   }
