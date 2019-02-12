@@ -3,7 +3,6 @@ export default class KapacitorApi {
     // endregion
 
     // region private members
-
     // endregion
 
     // region constructor

@@ -1,15 +1,21 @@
+import Event from '@/interfaces/Event';
+
 export default class BackendApi {
     // region public members
     // endregion
 
     // region private members
-    private backendUrl = ""
     // endregion
 
     // region constructor
     // endregion
 
     // region public methods
+    public static async events(topicName: string): Promise<Event[]> {
+        const response = await fetch(`http://82.140.0.78:8082/events/${topicName}?min-level=OK`);
+        const topic = await response.json();
+        return topic.events;
+    }
     // endregion
 
     // region private methods
