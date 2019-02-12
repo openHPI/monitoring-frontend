@@ -1,6 +1,6 @@
 <template>
-  <router-link :to="'/'+ icon + '/events'" class="subject-tile" :style="{ 'background-color': backgroundColor }" >
-    <img class="tile-icon" :src="'img/' + icon + '.svg'" />
+  <router-link :to="`/alerts/${icon}`" class="subject-tile" :style="{ 'background-color': backgroundColor }" >
+    <img class="tile-icon" :src="`img/${icon}.svg`" />
     <h2 class="tile-headline">{{title}}</h2>
   </router-link>
 </template>

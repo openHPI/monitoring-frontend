@@ -1,6 +1,6 @@
 <template>
   <div class="alerts">
-    <Header :title="category" />
+    <Header :title="topic" />
     <main>
       <ul class="alert-list">
         <li 
@@ -9,7 +9,7 @@
           class="alert" 
           :style="{ 'background-color': alert.backgroundColor }">
           <div class="icon-container">
-            <img class="icon" :src="`img/${category}.svg`" />
+            <img class="icon" :src="`img/${topic}.svg`" />
           </div>
           <div class="alert-message">{{ alert.message }}</div>
           <div class="alert-date">{{ alert.time }}</div>
@@ -26,10 +26,12 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Header from '@/components/Header.vue';
-import KapacitorAlert from '@/interfaces/Alert.ts';
+
+import BackendApi from '@/apis/BackendApi.ts'
 import DateUtil from '@/utils/DateUtil.ts';
 import ColorUtil from '@/utils/ColorUtil.ts';
 
+import Event from '@/interfaces/Event.ts';
 
 interface Alert {
   message: string;
@@ -43,7 +45,7 @@ interface Alert {
     Header,
   },
 })
-export default class EventList extends Vue {
+export default class AlertList extends Vue {
   // region public members
   // endregion
 
@@ -51,7 +53,7 @@ export default class EventList extends Vue {
   // endregion
 
   // region private members
-  private category: string = '';
+  private topic: string = '';
   private alerts: Alert[] = [];
   // endregion
 
@@ -60,14 +62,13 @@ export default class EventList extends Vue {
 
   // region private methods
   private mounted() {
-    this.category = this.$route.params.category;
+    this.topic = this.$route.params.topic;
     this.fetchAlerts();
   }
 
   private async fetchAlerts(): Promise<void> {
-    const response = await fetch(`http://82.140.0.78:8082/events/${this.category}?min-level=OK`);
-    const categoryJson = await response.json();
-    const events: Alert[] = categoryJson.events.map((event: KapacitorAlert) => {
+    const events = await BackendApi.events(this.topic);
+    const alerts: Alert[] = events.map((event) => {
       return {
         message: event.state.message,
         time: DateUtil.dateToTimeAgo(new Date(event.state.time)),
@@ -75,7 +76,7 @@ export default class EventList extends Vue {
         backgroundColor: ColorUtil.getColor(event.state.level),
       };
     });
-    this.alerts = events.sort((a: Alert, b: Alert) => ColorUtil.states[b.level] - ColorUtil.states[a.level]);
+    this.alerts = alerts.sort((a: Alert, b: Alert) => ColorUtil.states[b.level] - ColorUtil.states[a.level]);
   }
   // endregion
 }

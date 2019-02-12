@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router, { Route } from 'vue-router';
 import Dashboard from './views/Dashboard.vue';
-import EventList from './views/EventList.vue';
+import AlertList from './views/AlertList.vue';
 
 Vue.use(Router);
 
@@ -13,9 +13,9 @@ export default new Router({
       component: Dashboard,
     },
     {
-      path: '/:category/events',
-      name: 'events',
-      component: EventList,
+      path: '/alerts/:topic',
+      name: 'alerts',
+      component: AlertList,
     },
   ],
 });

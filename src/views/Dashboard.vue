@@ -20,8 +20,6 @@ import TopicTile from '@/components/TopicTile.vue';
 
 import KapacitorApi from '@/apis/KapacitorApi';
 
-import Alert from '@/interfaces/Alert';
-
 @Component({
   components: {
     TopicTile,
@@ -68,7 +66,7 @@ export default class Dashboard extends Vue {
     this.updateAlertLevels();
   }
 
-  private async updateAlertLevels(): Promise<void> {
+  private updateAlertLevels(): void {
     this.topics.forEach((topic) => {
       KapacitorApi.alertLevel(topic.tag).then((alertLevel) => topic.alertLevel = alertLevel);
     });
