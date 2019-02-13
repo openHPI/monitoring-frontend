@@ -8,15 +8,18 @@
     <div class="alert-message">{{ alert.message }}</div>
     <div class="alert-date">{{ alert.time }}</div>
     <a @click="toggleCollapse" href="#" class="icon-container">
-      <img class="icon" src="img/down-arrow.svg" />
+      <img v-if="collapsed" class="icon" src="img/down-arrow.svg" />
+      <img v-else class="icon" src="img/up-arrow.svg" />
     </a>
-    <ul v-if="!collapsed" class="alert-details">
-      <li>Server Information</li>
-      <li>FQDN: {{alert.fqdn}}</li>
-      <li>Hostname: {{alert.serverInfo.Hostname}}</li>
-      <li>ClusterID: {{alert.serverInfo.ClusterID}}</li>
-      <li>ServerID: {{alert.serverInfo.ClusterID}}</li>
-    </ul>
+    <div v-if="!collapsed" class="alert-details">
+      <h3>Server Information</h3>
+      <ul class="server-info">
+        <li>FQDN: {{alert.fqdn}}</li>
+        <li>Hostname: {{alert.serverInfo.Hostname}}</li>
+        <li>ClusterID: {{alert.serverInfo.ClusterID}}</li>
+        <li>ServerID: {{alert.serverInfo.ClusterID}}</li>
+      </ul>
+    </div>
     <div v-if="!collapsed" class="alert-buttons">
       <button @click="snoozeAlert">Snooze Alert</button>
     </div>
@@ -73,8 +76,11 @@ export default class AlertLine extends Vue {
   color: white;
 }
 
-.icon-container, .alert-message, .alert-date {
+.alert > * {
   padding: 20px;
+}
+
+.icon-container, .alert-message, .alert-date {
   display: flex;
   align-items: center;
 }
@@ -97,9 +103,37 @@ export default class AlertLine extends Vue {
   grid-column-end: 3;
 }
 
+h3 {
+  margin: 10px 0px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.server-info {
+  list-style: none;
+  font-size: 18px;
+  line-height: 1.3em;
+  padding: 0;
+}
+
 .alert-buttons {
   grid-column-start: 3;
   grid-column-end: 5;
+}
+
+.alert-buttons button {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 30px;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.alert-buttons button:focus {
+  outline: none;
 }
 
 </style>

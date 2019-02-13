@@ -1,10 +1,11 @@
 <template>
     <header>
         <router-link v-if="$route.path !== '/'" class="header-icon-link" to="/">
-            <img class="header-icon" :src="'img/left-arrow.svg'" />
+            <img class="header-icon" src="img/left-arrow.svg" />
         </router-link>
         <div v-else />
         <h1 class="header-title">{{title}}</h1>
+        <img v-if="$route.path !== '/'" class="header-icon" :src="`img/${title}.svg`" />
         <!-- <div id="credits">Icons made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a>, <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a>, <a href="https://www.flaticon.com/authors/roundicons" title="Roundicons">Roundicons</a>, <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> and <a href="https://www.flaticon.com/authors/rami-mcmin" title="Rami McMin">Rami McMin</a>  from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
     </header>
 </template>
@@ -46,12 +47,6 @@ header {
 
 .header-icon {
     max-height: 100%;
-    margin-top: 4px;
-}
-
-.header-icon-link {
-    display: inline-table;
-    height: 100%;
 }
 
 .header-title {
