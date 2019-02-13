@@ -22,6 +22,7 @@
     </div>
     <div v-if="!collapsed" class="alert-buttons">
       <button @click="snoozeAlert">Snooze Alert</button>
+      <button @click="openGraphana">Open in Grafana</button>
     </div>
   </li>
 </template>
@@ -59,6 +60,10 @@ export default class AlertLine extends Vue {
 
   private snoozeAlert(): void {
     // Snooze alert using backend
+  }
+
+  private openGraphana(): void {
+    window.open('https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=ctrl-dev.os.openhpi.de&panelId=1', '_blank')
   }
   // endregion
 }
@@ -130,6 +135,11 @@ h3 {
   font-size: 30px;
   padding: 20px;
   cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.alert-buttons button:last-child {
+  margin-bottom: 0px;
 }
 
 .alert-buttons button:focus {
