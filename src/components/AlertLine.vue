@@ -48,7 +48,8 @@ export default class AlertLine extends Vue {
 .alert {
   background-color: grey;
   margin: 15px 30px;
-  border-radius: 20px;
+  padding: 10px 35px 10px 10px;
+  border-radius: 10px;
   display: grid;
   grid-template-columns: 130px auto 200px 100px;
 }

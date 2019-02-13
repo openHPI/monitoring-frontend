@@ -46,11 +46,18 @@ header {
 
 .header-icon {
     max-height: 100%;
+    margin-top: 4px;
+}
+
+.header-icon-link {
+    display: inline-table;
+    height: 100%;
 }
 
 .header-title {
     color: white;
     text-align: center;
     text-transform: capitalize;
+    margin-top: 11px;
 }
 </style>
