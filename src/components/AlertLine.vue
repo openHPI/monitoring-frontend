@@ -17,7 +17,7 @@
         <li>FQDN: {{alert.fqdn}}</li>
         <li>Hostname: {{alert.serverInfo.Hostname}}</li>
         <li>ClusterID: {{alert.serverInfo.ClusterID}}</li>
-        <li>ServerID: {{alert.serverInfo.ClusterID}}</li>
+        <li>ServerID: {{alert.serverInfo.ServerID}}</li>
       </ul>
     </div>
     <div v-if="!collapsed" class="alert-buttons">
@@ -63,7 +63,7 @@ export default class AlertLine extends Vue {
   }
 
   private openGraphana(): void {
-    window.open('https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=ctrl-dev.os.openhpi.de&panelId=1', '_blank')
+    window.open(`https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`, '_blank')
   }
   // endregion
 }

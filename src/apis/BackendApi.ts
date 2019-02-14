@@ -12,7 +12,7 @@ export default class BackendApi {
 
     // region public methods
     public static async events(topicName: string): Promise<KapacitorEvent[]> {
-        const response = await fetch(`http://82.140.0.78:8082/events/${topicName}?min-level=OK`);
+        const response = await fetch(`http://82.140.0.78:8082/events/${topicName}?min-level=WARNING`);
         const topic = await response.json();
         return topic.events;
     }
