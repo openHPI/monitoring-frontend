@@ -1,46 +1,58 @@
 <template>
-  <div class="dashboard-grid">
-    <SubjectTile
-      title="Frontend"
-      icon="frontend" />
-
-    <SubjectTile
-      title="Backend"
-      icon="backend" />
-
-    <SubjectTile
-      title="Network"
-      icon="network" />
-
-    <SubjectTile
-      title="Hardware"
-      icon="hardware"
-      :status="alertLevel" />
+  <div class="dashboard">
+    <Header title="OpenHPI Dashboard" />
+    <main class="dashboard-grid">
+      <TopicTile
+        v-for="topic in topics"
+        :key="topic.title"
+        :title="topic.title"
+        :icon="topic.tag"
+        :alertLevel="topic.alertLevel" />
+    </main>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import SubjectTile from '@/components/SubjectTile.vue';
+import Header from '@/components/Header.vue';
+import TopicTile from '@/components/TopicTile.vue';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faWindowMaximize, faCode, faServer, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
-import Alert from '@/interfaces/Alert';
-
-library.add(faWindowMaximize, faCode, faServer, faNetworkWired);
+import KapacitorApi from '@/apis/KapacitorApi';
 
 @Component({
   components: {
-    SubjectTile,
+    TopicTile,
+    Header,
   },
 })
 export default class Dashboard extends Vue {
   // region public members
-  public alertLevel: string = 'OK';
   // endregion
 
   // region private members
+  private topics = [
+    {
+      title: 'Frontend',
+      tag: 'frontend',
+      alertLevel: 'OK',
+    },
+    {
+      title: 'Backend',
+      tag: 'backend',
+      alertLevel: 'OK',
+    },
+    {
+      title: 'Network',
+      tag: 'network',
+      alertLevel: 'OK',
+    },
+    {
+      title: 'Hardware',
+      tag: 'hardware',
+      alertLevel: 'OK',
+    },
+  ];
   // endregion
 
   // region constructor
@@ -51,18 +63,13 @@ export default class Dashboard extends Vue {
 
   // region private methods
   private mounted() {
-    this.fetchAlerts();
+    this.updateAlertLevels();
   }
 
-  private async fetchAlerts(): Promise<void> {
-    const response = await fetch('http://82.140.0.78:8082/alerts/');
-    const alerts: Alert[] = await response.json();
-    const alert = alerts.pop();
-    if (alert) {
-      this.alertLevel = alert.level;
-      // tslint:disable-next-line:no-console
-      console.log(alert.level);
-    }
+  private updateAlertLevels(): void {
+    this.topics.forEach((topic) => {
+      KapacitorApi.alertLevel(topic.tag).then((alertLevel) => topic.alertLevel = alertLevel);
+    });
   }
   // endregion
 }
@@ -71,6 +78,13 @@ export default class Dashboard extends Vue {
 <style lang="less">
 
 @spacing: 60px;
+
+.dashboard {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 120px auto;
+  background-color: #363533;
+}
 
 .dashboard-grid {
   height: 100%;
