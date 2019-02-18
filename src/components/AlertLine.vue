@@ -12,12 +12,17 @@
       <img v-else class="icon" src="img/up-arrow.svg" />
     </a>
     <div v-if="!collapsed" class="alert-details">
-      <h3>Server Information</h3>
+      <h3>Tags</h3>
       <ul class="server-info">
-        <li>FQDN: {{alert.fqdn}}</li>
-        <li>Hostname: {{alert.serverInfo.Hostname}}</li>
-        <li>ClusterID: {{alert.serverInfo.ClusterID}}</li>
-        <li>ServerID: {{alert.serverInfo.ServerID}}</li>
+        <li v-for="tag in Object.keys(alert.tags)" :key="tag">
+          <strong>{{tag}}</strong>: {{alert.tags[tag]}}
+        </li>
+      </ul>
+      <h3>Alert Details</h3>
+      <ul class="server-info">
+        <li v-for="field in Object.keys(alert.fields)" :key="field">
+          <strong>{{field}}</strong>: {{alert.fields[field]}}
+        </li>
       </ul>
     </div>
     <div v-if="!collapsed" class="alert-buttons">
@@ -112,9 +117,13 @@ export default class AlertLine extends Vue {
 }
 
 h3 {
-  margin: 10px 0px;
+  margin: 30px 0px 10px;
   font-size: 20px;
   font-weight: 600;
+}
+
+h3:first-child {
+  margin-top: 0px;
 }
 
 .server-info {
