@@ -63,7 +63,10 @@ export default class AlertLine extends Vue {
   }
 
   private openGraphana(): void {
-    window.open(`https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`, '_blank')
+    window.open(
+      `https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`,
+      '_blank',
+    );
   }
   // endregion
 }
