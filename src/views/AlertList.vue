@@ -57,6 +57,9 @@ export default class AlertList extends Vue {
     const alerts: Alert[] = events.map((event) => {
       return {
         message: event.state.message,
+        title: event.state.title,
+        subtitle: event.state.subtitle,
+        subsubtitle: event.state.subsubtitle,
         time: DateUtil.dateToTimeAgo(new Date(event.state.time)),
         level: event.state.level,
         backgroundColor: ColorUtil.getColor(event.state.level),
