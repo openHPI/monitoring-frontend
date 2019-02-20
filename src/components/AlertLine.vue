@@ -23,6 +23,7 @@
     <div v-if="!collapsed" class="alert-buttons">
       <button @click="snoozeAlert">Snooze Alert</button>
       <button @click="openGraphana">Open in Grafana</button>
+      <button @click="openMnemosyne">Open in Mnemosyne</button>
     </div>
   </li>
 </template>
@@ -32,6 +33,8 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 import Alert from '@/interfaces/Alert';
+import BackendApi from '@/apis/BackendApi.ts';
+import config from '@/config';
 
 @Component
 export default class AlertLine extends Vue {
@@ -59,11 +62,25 @@ export default class AlertLine extends Vue {
   }
 
   private snoozeAlert(): void {
-    // Snooze alert using backend
+    BackendApi.snoozeEvent(this.alert.id);
   }
 
   private openGraphana(): void {
-    window.open(`https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`, '_blank')
+    window.open(`${config.baseURL}/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`, '_blank')
+  }
+
+  private openMnemosyne(): void {
+    // Use first platform as fallback
+    let platformId = config.platforms[0];
+
+    for (const platform of config.platforms) {
+      // Search for known platform in event id
+      if (this.alert.id.includes(platform)) {
+        platformId = platform;
+      }
+    }
+
+    window.open(`${config.baseURL}/mnemosyne/platform/${platformId}/traces`, '_blank');
   }
   // endregion
 }
