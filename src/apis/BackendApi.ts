@@ -16,6 +16,12 @@ export default class BackendApi {
         const topic = await response.json();
         return topic.events;
     }
+
+    public static async snoozeEvent(topicName: string): Promise<any> {
+        const response = await fetch(`http://82.140.0.78:8082/events/${topicName}/snooze`);
+        const topic = await response.json();
+        return topic.events;
+    }
     // endregion
 
     // region private methods
