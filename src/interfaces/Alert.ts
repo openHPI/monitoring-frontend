@@ -1,4 +1,5 @@
 export default interface Alert {
+    id: string;
     message: string;
     time: string;
     level: string;
