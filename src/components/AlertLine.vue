@@ -1,7 +1,8 @@
 <template>
   <li 
     class="alert" 
-    :style="{ 'background-color': alert.backgroundColor }">
+    :style="{ 'background-color': alert.backgroundColor }"
+    @keyup.esc="showModal = false" tabindex="0">
     <div class="icon-container">
       <img class="icon" :src="`img/${topic}.svg`" />
     </div>
@@ -25,7 +26,7 @@
       <button @click="openGraphana">Open in Grafana</button>
       <button @click="showModal = true">Settings</button>
     </div>
-    <TaskVariablesModal v-if="showModal" @close="showModal = false" :taskName="alert.taskName">
+    <TaskVariablesModal v-if="showModal" @close="showModal = false" :taskName="alert.taskName" :backgroundColor="alert.backgroundColor">
     </TaskVariablesModal>
   </li>
 </template>
