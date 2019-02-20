@@ -104,7 +104,6 @@ export default class TaskVariablesModal extends Vue {
   width: 300px;
   margin: 0px auto;
   padding: 20px 30px;
-      background-color: rgb(176, 84, 77);
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
