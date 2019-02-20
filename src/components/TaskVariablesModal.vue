@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <div class="modal-container" :style="{ 'background-color': backgroundColor }">
 
           <div class="modal-header">
               <h1 class="header-title">Settings</h1>
@@ -40,6 +40,7 @@ import KapacitorApi from '@/apis/KapacitorApi.ts';
 export default class TaskVariablesModal extends Vue {
   // region properties
   @Prop(String) public taskName!: string;
+  @Prop(String) public backgroundColor!: string;
   // endregion
 
   // region public members
