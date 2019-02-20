@@ -70,8 +70,7 @@ export default class AlertLine extends Vue {
   }
 
   private openMnemosyne(): void {
-    // Use first platform as fallback
-    let platformId = config.platforms[0];
+    let platformId = '';
 
     for (const platform of config.platforms) {
       // Search for known platform in event id
