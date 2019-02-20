@@ -9,4 +9,5 @@ export default interface Alert {
         ClusterID: string;
         ServerID: string;
     };
+    taskName: string;
 }
