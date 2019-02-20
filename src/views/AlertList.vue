@@ -56,6 +56,7 @@ export default class AlertList extends Vue {
     const events = await BackendApi.events(this.topic);
     const alerts: Alert[] = events.map((event) => {
       return {
+        id: event.id,
         message: event.state.message,
         time: DateUtil.dateToTimeAgo(new Date(event.state.time)),
         level: event.state.level,
