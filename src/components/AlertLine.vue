@@ -23,7 +23,10 @@
     <div v-if="!collapsed" class="alert-buttons">
       <button @click="snoozeAlert">Snooze Alert</button>
       <button @click="openGraphana">Open in Grafana</button>
+      <button @click="showModal = true">Settings</button>
     </div>
+    <TaskVariablesModal v-if="showModal" @close="showModal = false" :taskName="alert.taskName">
+    </TaskVariablesModal>
   </li>
 </template>
 
@@ -32,8 +35,13 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 import Alert from '@/interfaces/Alert';
+import TaskVariablesModal from '@/components/TaskVariablesModal.vue';
 
-@Component
+@Component({
+  components: {
+    TaskVariablesModal,
+  },
+})
 export default class AlertLine extends Vue {
   // region properties
   @Prop(Object) public alert!: Alert;
@@ -48,6 +56,7 @@ export default class AlertLine extends Vue {
 
   // region private members
   private collapsed: boolean = true;
+  private showModal: boolean = false;
   // endregion
 
   // region constructor
