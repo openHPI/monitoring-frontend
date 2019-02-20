@@ -62,6 +62,7 @@ export default class AlertList extends Vue {
         backgroundColor: ColorUtil.getColor(event.state.level),
         fqdn: event.state.details.Tags.fqdn,
         serverInfo: event.state.details.ServerInfo,
+        taskName: event.state.details.TaskName,
       };
     });
     this.alerts = alerts.sort((a: Alert, b: Alert) => ColorUtil.states[b.level] - ColorUtil.states[a.level]);
