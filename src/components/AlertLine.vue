@@ -5,7 +5,7 @@
     <div class="icon-container">
       <img class="icon" :src="`img/${topic}.svg`" />
     </div>
-    <div class="alert-message">{{ alert.message }}</div>
+    <div class="alert-message">{{ alert.title }}<br>{{ alert.subtitle }}<br>{{ alert.subsubtitle }}</div>
     <div class="alert-date">{{ alert.time }}</div>
     <a @click="toggleCollapse" href="#" class="icon-container">
       <img v-if="collapsed" class="icon" src="img/down-arrow.svg" />
