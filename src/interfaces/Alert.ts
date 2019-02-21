@@ -12,4 +12,5 @@ export default interface Alert {
     fields: {
         [key: string]: number;
     };
+    taskName: string;
 }

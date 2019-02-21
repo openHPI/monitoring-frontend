@@ -63,6 +63,7 @@ export default class AlertList extends Vue {
         time: DateUtil.dateToTimeAgo(new Date(event.state.time)),
         level: event.state.level,
         backgroundColor: ColorUtil.getColor(event.state.level),
+        taskName: event.state.details.TaskName,
         tags: event.state.details.Tags,
         fields: event.state.details.Fields,
       };
