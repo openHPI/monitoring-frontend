@@ -9,7 +9,7 @@
           </div>
 
           <div class="modal-body">
-            <slot v-for="taskVariableKey in Object.keys(taskVariables)" name="body">
+            <slot v-for="taskVariableKey in getFilteredTaskVariableKeys()" name="body">
               <label :key="taskVariableKey + 'label'" :for="taskVariableKey + 'input'">{{ toFreeText(taskVariableKey) }}:</label>
               <input v-if="taskVariables[taskVariableKey].type === 'string' || taskVariables[taskVariableKey].type === 'lambda'" :key="taskVariableKey + 'input'" v-model="taskVariables[taskVariableKey].value" type="text">
               <input v-if="taskVariables[taskVariableKey].type === 'float' || taskVariables[taskVariableKey].type === 'duration'" :key="taskVariableKey + 'input'" v-model.number="taskVariables[taskVariableKey].value" type="number">
@@ -76,6 +76,12 @@ export default class TaskVariablesModal extends Vue {
     this.$emit('close');
 
     await KapacitorApi.updateTaskVariables(this.taskName, this.taskVariables);
+  }
+
+  private getFilteredTaskVariableKeys(): string[] {
+    return Object.keys(this.taskVariables).filter((taskVariableKey) => {
+      return !['group_by', 'morgothField', 'morgothScoreField'].includes(taskVariableKey);
+    });
   }
   // endregion
 }
