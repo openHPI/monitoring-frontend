@@ -18,10 +18,8 @@ export default class BackendApi {
         return topic.events;
     }
 
-    public static async snoozeEvent(topicName: string): Promise<any> {
-        const response = await fetch(`${config.kapacitorProxyURL}/events/${topicName}/snooze`);
-        const topic = await response.json();
-        return topic.events;
+    public static async snoozeEvent(topicName: string): Promise<void> {
+        await fetch(`${config.kapacitorProxyURL}/events/${topicName}/snooze`);
     }
     // endregion
 
