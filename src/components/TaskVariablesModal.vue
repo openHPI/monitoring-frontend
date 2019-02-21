@@ -11,8 +11,10 @@
           <div class="modal-body">
             <slot v-for="taskVariableKey in getFilteredTaskVariableKeys()" name="body">
               <label :key="taskVariableKey + 'label'" :for="taskVariableKey + 'input'">{{ toFreeText(taskVariableKey) }}:</label>
-              <input v-if="taskVariables[taskVariableKey].type === 'string' || taskVariables[taskVariableKey].type === 'lambda'" :key="taskVariableKey + 'input'" v-model="taskVariables[taskVariableKey].value" type="text">
-              <input v-if="taskVariables[taskVariableKey].type === 'float' || taskVariables[taskVariableKey].type === 'duration'" :key="taskVariableKey + 'input'" v-model.number="taskVariables[taskVariableKey].value" type="number">
+              <input v-if="taskVariables[taskVariableKey].type === 'string' || taskVariables[taskVariableKey].type === 'lambda'"
+               :key="taskVariableKey + 'input'" v-model="taskVariables[taskVariableKey].value" type="text">
+              <input v-if="taskVariables[taskVariableKey].type === 'float' || taskVariables[taskVariableKey].type === 'duration'"
+               :key="taskVariableKey + 'input'" v-model.number="taskVariables[taskVariableKey].value" type="number">
             </slot>
           </div>
 
