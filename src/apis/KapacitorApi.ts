@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export default class KapacitorApi {
     // region public members
     // endregion
@@ -25,16 +23,21 @@ export default class KapacitorApi {
     }
 
     public static async updateTaskVariables(taskName: string, taskVariables: any): Promise<string> {
-        await axios.patch(`http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`, {
-            vars: taskVariables,
+        const taskURL = `http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`;
+
+        await fetch(taskURL, {
+            method: 'PATCH',
+            body: JSON.stringify({ vars: taskVariables }),
         });
 
-        await axios.patch(`http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`, {
-            status: 'disabled',
+        await fetch(taskURL, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'disabled' }),
         });
 
-        await axios.patch(`http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`, {
-            status: 'enabled',
+        await fetch(taskURL, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'enabled' }),
         });
 
         return 'OK';
