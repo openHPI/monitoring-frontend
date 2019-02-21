@@ -4,10 +4,10 @@ export default interface Alert {
     time: string;
     level: string;
     backgroundColor: string;
-    fqdn: string;
-    serverInfo: {
-        Hostname: string;
-        ClusterID: string;
-        ServerID: string;
+    tags: {
+        [key: string]: string;
+    };
+    fields: {
+        [key: string]: number;
     };
 }
