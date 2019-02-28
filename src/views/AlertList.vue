@@ -66,6 +66,8 @@ export default class AlertList extends Vue {
         taskName: event.state.details.TaskName,
         tags: event.state.details.Tags,
         fields: event.state.details.Fields,
+        grafanaDashboardName: event.state.details.GrafanaDashboardName,
+        grafanaPanelID: event.state.details.GrafanaPanelID,
       };
     });
     this.alerts = alerts.sort((a: Alert, b: Alert) => ColorUtil.states[b.level] - ColorUtil.states[a.level]);
