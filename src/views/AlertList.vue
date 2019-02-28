@@ -69,6 +69,8 @@ export default class AlertList extends Vue {
         tags: event.state.details.Tags,
         fields: event.state.details.Fields,
         wasSnoozed: event.state.wasSnoozed,
+        grafanaDashboardName: event.state.details.GrafanaDashboardName,
+        grafanaPanelID: event.state.details.GrafanaPanelID,
       };
     });
     this.alerts = alerts.sort((a: Alert, b: Alert) => Number(a.wasSnoozed) - Number(b.wasSnoozed)
