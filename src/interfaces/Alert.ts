@@ -13,4 +13,6 @@ export default interface Alert {
         [key: string]: number;
     };
     taskName: string;
+    grafanaDashboardName: string;
+    grafanaPanelID: number;
 }
