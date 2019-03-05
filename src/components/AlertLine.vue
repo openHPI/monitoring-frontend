@@ -1,11 +1,12 @@
 <template>
   <li 
     class="alert" 
-    :style="{ 'background-color': alert.backgroundColor }">
+    :style="{ 'background-color': alert.backgroundColor }"
+    @keyup.esc="showTaskVariablesModal = false; showSnoozeModal = false" tabindex="0">
     <div class="icon-container">
       <img class="icon" :src="`img/${topic}.svg`" />
     </div>
-    <div class="alert-message">{{ alert.message }}</div>
+    <div class="alert-message">{{ alert.title }}<br>{{ alert.subtitle }}<br>{{ alert.subsubtitle }}</div>
     <div class="alert-date">{{ alert.time }}</div>
     <a @click="toggleCollapse" href="#" class="icon-container">
       <img v-if="collapsed" class="icon" src="img/down-arrow.svg" />
@@ -26,10 +27,18 @@
       </ul>
     </div>
     <div v-if="!collapsed" class="alert-buttons">
-      <button @click="snoozeAlert">Snooze Alert</button>
-      <button @click="openGraphana">Open in Grafana</button>
+      <button v-if="alert.wasSnoozed" @click="unsnoozeAlert">Unsnooze</button>
+      <button v-else @click="showSnoozeModal = true">Snooze ...</button>
+      <button @click="openGrafana">Open in Grafana</button>
       <button @click="openMnemosyne">Open in Mnemosyne</button>
+      <button @click="showTaskVariablesModal = true">Settings</button>
     </div>
+    <SnoozeModal v-if="showSnoozeModal" @close="showSnoozeModal = false" @snooze="alert.wasSnoozed = true"
+     :eventId="alert.id" :backgroundColor="alert.backgroundColor">
+    </SnoozeModal>
+    <TaskVariablesModal v-if="showTaskVariablesModal" @close="showTaskVariablesModal = false"
+     :taskName="alert.taskName" :backgroundColor="alert.backgroundColor">
+    </TaskVariablesModal>
   </li>
 </template>
 
@@ -38,10 +47,17 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 import Alert from '@/interfaces/Alert';
+import TaskVariablesModal from '@/components/TaskVariablesModal.vue';
+import SnoozeModal from '@/components/SnoozeModal.vue';
 import BackendApi from '@/apis/BackendApi.ts';
 import config from '@/config';
 
-@Component
+@Component({
+  components: {
+    TaskVariablesModal,
+    SnoozeModal,
+  },
+})
 export default class AlertLine extends Vue {
   // region properties
   @Prop(Object) public alert!: Alert;
@@ -56,6 +72,8 @@ export default class AlertLine extends Vue {
 
   // region private members
   private collapsed: boolean = true;
+  private showTaskVariablesModal: boolean = false;
+  private showSnoozeModal: boolean = false;
   // endregion
 
   // region constructor
@@ -66,8 +84,9 @@ export default class AlertLine extends Vue {
     this.collapsed = !this.collapsed;
   }
 
-  private snoozeAlert(): void {
-    BackendApi.snoozeEvent(this.alert.id);
+  private async unsnoozeAlert(): Promise<void> {
+    this.alert.wasSnoozed = false;
+    await BackendApi.unsnoozeEvent(this.alert.id);
   }
 
   private openGrafana(): void {

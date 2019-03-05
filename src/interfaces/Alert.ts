@@ -1,6 +1,9 @@
 export default interface Alert {
     id: string;
     message: string;
+    title: string;
+    subtitle: string;
+    subsubtitle: string;
     time: string;
     level: string;
     backgroundColor: string;
@@ -10,4 +13,6 @@ export default interface Alert {
     fields: {
         [key: string]: number;
     };
+    taskName: string;
+    wasSnoozed: boolean;
 }

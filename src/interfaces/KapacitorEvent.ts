@@ -6,6 +6,9 @@ export default interface KapacitorEvent {
     id: string;
     state: {
         message: string,
+        title: string;
+        subtitle: string;
+        subsubtitle: string;
         details: {
             Name: string;
             TaskName: string;
@@ -30,5 +33,6 @@ export default interface KapacitorEvent {
         time: string;
         duration: string;
         level: string;
+        wasSnoozed: boolean;
     };
 }

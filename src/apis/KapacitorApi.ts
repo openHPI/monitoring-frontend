@@ -15,6 +15,33 @@ export default class KapacitorApi {
         const test = topics.topics.find((topic: any) => topic.id === topicName);
         return test ? test.level : 'OK';
     }
+
+    public static async taskVariables(taskName: string): Promise<any> {
+        const response = await fetch(`http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`);
+        const topic = await response.json();
+        return topic.vars;
+    }
+
+    public static async updateTaskVariables(taskName: string, taskVariables: any): Promise<string> {
+        const taskURL = `http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`;
+
+        await fetch(taskURL, {
+            method: 'PATCH',
+            body: JSON.stringify({ vars: taskVariables }),
+        });
+
+        await fetch(taskURL, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'disabled' }),
+        });
+
+        await fetch(taskURL, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'enabled' }),
+        });
+
+        return 'OK';
+    }
     // endregion
 
     // region private methods
