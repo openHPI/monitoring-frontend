@@ -45,6 +45,7 @@ import { Component, Prop } from 'vue-property-decorator';
 
 import Alert from '@/interfaces/Alert';
 import KapacitorTask from '@/interfaces/KapacitorTask';
+import KapacitorTaskVariables from '@/interfaces/KapacitorTaskVariables';
 import KapacitorApi from '@/apis/KapacitorApi.ts';
 
 @Component
@@ -61,9 +62,9 @@ export default class TaskVariablesModal extends Vue {
   // endregion
 
   // region private members
-  private tasks: any = {};
+  private tasks: KapacitorTask[] = [];
   private selectedTaskName = this.taskName;
-  private taskVariables: any = {};
+  private taskVariables: KapacitorTaskVariables = {};
   // endregion
 
   // region constructor
@@ -87,7 +88,11 @@ export default class TaskVariablesModal extends Vue {
   }
 
   private async updateTaskVariables(): Promise<void> {
-    this.taskVariables = this.tasks.find((task: KapacitorTask) => task.id === this.selectedTaskName).vars;
+    const selectedTask = this.tasks.find((task: KapacitorTask) => task.id === this.selectedTaskName);
+
+    if (selectedTask) {
+      this.taskVariables = selectedTask.vars;
+    }
   }
 
   private async saveTaskVariables(): Promise<void> {
