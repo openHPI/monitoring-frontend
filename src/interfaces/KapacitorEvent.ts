@@ -33,5 +33,6 @@ export default interface KapacitorEvent {
         time: string;
         duration: string;
         level: string;
+        wasSnoozed: boolean;
     };
 }
