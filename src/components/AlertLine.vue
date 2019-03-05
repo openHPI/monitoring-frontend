@@ -97,7 +97,7 @@ export default class AlertLine extends Vue {
   }
 
   private openMnemosyne(): void {
-    const platformId = config.platforms.find((platform) => this.alert.id.includes(platform)) || '';
+    const platformId = config.platforms.find((platform: string) => this.alert.id.includes(platform)) || '';
     window.open(`${config.baseURL}/mnemosyne/platform/${platformId}/traces`, '_blank');
   }
   // endregion
