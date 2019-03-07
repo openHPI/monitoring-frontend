@@ -1,3 +1,5 @@
+import KapacitorTask from '@/interfaces/KapacitorTask';
+
 export default class KapacitorApi {
     // region public members
     // endregion
@@ -16,10 +18,10 @@ export default class KapacitorApi {
         return test ? test.level : 'OK';
     }
 
-    public static async taskVariables(taskName: string): Promise<any> {
-        const response = await fetch(`http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`);
-        const topic = await response.json();
-        return topic.vars;
+    public static async tasks(): Promise<KapacitorTask[]> {
+        const response = await fetch(`http://82.140.0.78:9092/kapacitor/v1/tasks`);
+        const responseJSON = await response.json();
+        return responseJSON.tasks;
     }
 
     public static async updateTaskVariables(taskName: string, taskVariables: any): Promise<string> {
@@ -41,6 +43,12 @@ export default class KapacitorApi {
         });
 
         return 'OK';
+    }
+
+    public static async deleteTask(taskName: string): Promise<void> {
+        await fetch(`http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`, {
+            method: 'DELETE',
+        });
     }
     // endregion
 
