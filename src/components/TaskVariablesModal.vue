@@ -9,6 +9,11 @@
           </div>
 
           <div class="modal-body">
+            <label>Task:</label>
+            <select v-model="selectedTaskName" @change="updateTaskVariables">
+              <option v-for="task in tasks" :key="task.id" :value="task.id">{{ task.id }}</option>
+            </select>
+
             <slot v-for="taskVariableKey in getFilteredTaskVariableKeys()" name="body">
               <label :key="taskVariableKey + 'label'" :for="taskVariableKey + 'input'">{{ toFreeText(taskVariableKey) }}:</label>
               <input v-if="taskVariables[taskVariableKey].type === 'string' || taskVariables[taskVariableKey].type === 'lambda'"
@@ -23,6 +28,9 @@
               <button class="modal-default-button" @click="saveTaskVariables">
                 Save
               </button>
+              <button class="modal-default-button" @click="deleteTask">
+                Delete Task
+              </button>
             </slot>
           </div>
         </div>
@@ -36,6 +44,8 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 import Alert from '@/interfaces/Alert';
+import KapacitorTask from '@/interfaces/KapacitorTask';
+import KapacitorTaskVariables from '@/interfaces/KapacitorTaskVariables';
 import KapacitorApi from '@/apis/KapacitorApi.ts';
 
 @Component
@@ -52,7 +62,9 @@ export default class TaskVariablesModal extends Vue {
   // endregion
 
   // region private members
-  private taskVariables: any = {};
+  private tasks: KapacitorTask[] = [];
+  private selectedTaskName = this.taskName;
+  private taskVariables: KapacitorTaskVariables = {};
   // endregion
 
   // region constructor
@@ -60,7 +72,7 @@ export default class TaskVariablesModal extends Vue {
 
   // region private methods
   private mounted() {
-    this.fetchTaskVariables();
+    this.fetchTasks();
   }
 
   private toFreeText(text: string): string {
@@ -70,20 +82,35 @@ export default class TaskVariablesModal extends Vue {
     return finalResult;
   }
 
-  private async fetchTaskVariables(): Promise<void> {
-    this.taskVariables = await KapacitorApi.taskVariables(this.taskName);
+  private async fetchTasks(): Promise<void> {
+    this.tasks = await KapacitorApi.tasks();
+    this.updateTaskVariables();
+  }
+
+  private async updateTaskVariables(): Promise<void> {
+    const selectedTask = this.tasks.find((task: KapacitorTask) => task.id === this.selectedTaskName);
+
+    if (selectedTask) {
+      this.taskVariables = selectedTask.vars;
+    }
   }
 
   private async saveTaskVariables(): Promise<void> {
     this.$emit('close');
 
-    await KapacitorApi.updateTaskVariables(this.taskName, this.taskVariables);
+    await KapacitorApi.updateTaskVariables(this.selectedTaskName, this.taskVariables);
   }
 
   private getFilteredTaskVariableKeys(): string[] {
     return Object.keys(this.taskVariables).filter((taskVariableKey) => {
       return !['group_by', 'morgothField', 'morgothScoreField'].includes(taskVariableKey);
     });
+  }
+
+  private async deleteTask(): Promise<void> {
+    this.$emit('close');
+
+    await KapacitorApi.deleteTask(this.selectedTaskName);
   }
   // endregion
 }
@@ -175,6 +202,13 @@ input {
     margin-bottom: 10px;
     margin-top: 10px;
     outline: none;
+}
+
+select {
+  width: 100%;
+  height: 40px;
+  outline: none;
+  margin-bottom: 20px;
 }
 
 </style>

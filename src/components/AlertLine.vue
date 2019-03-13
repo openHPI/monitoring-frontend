@@ -33,6 +33,7 @@
       <button v-if="alert.wasSnoozed" @click="unsnoozeAlert">Unsnooze</button>
       <button v-else @click="showSnoozeModal = true">Snooze ...</button>
       <button @click="openGrafana">Open in Grafana</button>
+      <button @click="openMnemosyne">Open in Mnemosyne</button>
       <button @click="showTaskVariablesModal = true">Settings</button>
     </div>
     <SnoozeModal v-if="showSnoozeModal" @close="showSnoozeModal = false" @snooze="alert.wasSnoozed = true"
@@ -52,6 +53,7 @@ import Alert from '@/interfaces/Alert';
 import TaskVariablesModal from '@/components/TaskVariablesModal.vue';
 import SnoozeModal from '@/components/SnoozeModal.vue';
 import BackendApi from '@/apis/BackendApi.ts';
+import config from '@/config';
 
 @Component({
   components: {
@@ -95,6 +97,11 @@ export default class AlertLine extends Vue {
       `https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`,
       '_blank',
     );
+  }
+
+  private openMnemosyne(): void {
+    const platformId = config.platforms.find((platform: string) => this.alert.id.includes(platform)) || '';
+    window.open(`${config.baseURL}/mnemosyne/platform/${platformId}/traces`, '_blank');
   }
   // endregion
 }
