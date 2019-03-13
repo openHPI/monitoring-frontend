@@ -63,6 +63,20 @@ export default class KapacitorApi {
             method: 'DELETE',
         });
     }
+
+    public static async createTask(taskName: string, templateName: string,
+                                   taskVariables: KapacitorTaskVariables): Promise<string> {
+        await fetch('http://82.140.0.78:9092/kapacitor/v1/tasks', {
+            method: 'POST',
+            body: JSON.stringify({
+                'id': taskName,
+                'template-id': templateName,
+                'vars': taskVariables,
+            }),
+        });
+
+        return 'OK';
+    }
     // endregion
 
     // region private methods
