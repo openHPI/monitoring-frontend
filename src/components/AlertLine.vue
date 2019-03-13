@@ -41,7 +41,7 @@
     <SnoozeModal v-if="showSnoozeModal" @close="showSnoozeModal = false" @snooze="alert.wasSnoozed = true"
      :eventId="alert.id" :backgroundColor="alert.backgroundColor">
     </SnoozeModal>
-    <TaskVariablesModal v-if="showTaskVariablesModal" @close="showTaskVariablesModal = false"
+    <TaskVariablesModal v-if="showTaskVariablesModal" @close="showTaskVariablesModal = false" @createTask="showCreateTaskModal = true"
      :taskName="alert.taskName" :backgroundColor="alert.backgroundColor">
     </TaskVariablesModal>
     <CreateTaskModal v-if="showCreateTaskModal" @close="showCreateTaskModal = false">
