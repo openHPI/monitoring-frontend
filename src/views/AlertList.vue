@@ -2,7 +2,9 @@
   <div class="alerts">
     <Header :title="topic" />
     <main>
-      <input type="text" class="searchbar" placeholder="Search Alerts" @input="searchAlerts" />
+      <div class="searchbar-container">
+        <input type="text" class="searchbar" placeholder="Search Alerts" @input="searchAlerts" />
+      </div>
       <ul class="alert-list">
         <AlertLine 
           v-for="alert in alerts"
@@ -126,9 +128,13 @@ main {
   overflow: scroll;
 }
 
+.searchbar-container {
+  display: flex;
+}
+
 .searchbar {
   margin: 15px 30px;
-  width: calc(100% - 100px);
+  width: 100%;
   font-size: 23px;
   padding: 20px;
   color: #363533;
