@@ -75,6 +75,11 @@ export default class KapacitorApi {
             }),
         });
 
+        await fetch(`http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'enabled' }),
+        });
+
         return 'OK';
     }
     // endregion
