@@ -1,4 +1,5 @@
 import KapacitorTask from '@/interfaces/KapacitorTask';
+import KapacitorTaskVariables from '@/interfaces/KapacitorTaskVariables';
 
 export default class KapacitorApi {
     // region public members
@@ -24,7 +25,7 @@ export default class KapacitorApi {
         return responseJSON.tasks;
     }
 
-    public static async updateTaskVariables(taskName: string, taskVariables: any): Promise<string> {
+    public static async updateTaskVariables(taskName: string, taskVariables: KapacitorTaskVariables): Promise<string> {
         const taskURL = `http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`;
 
         await fetch(taskURL, {
