@@ -31,6 +31,9 @@
               <button class="modal-default-button" @click="deleteTask">
                 Delete Task
               </button>
+              <button class="modal-default-button" @click="createTask">
+                Create new Task
+              </button>
             </slot>
           </div>
         </div>
@@ -111,6 +114,11 @@ export default class TaskVariablesModal extends Vue {
     this.$emit('close');
 
     await KapacitorApi.deleteTask(this.selectedTaskName);
+  }
+
+  private createTask(): void {
+    this.$emit('close');
+    this.$emit('createTask');
   }
   // endregion
 }
