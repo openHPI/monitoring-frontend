@@ -1,4 +1,5 @@
 export default interface Alert {
+    id: string;
     message: string;
     title: string;
     subtitle: string;
@@ -13,6 +14,7 @@ export default interface Alert {
         [key: string]: number;
     };
     taskName: string;
+    wasSnoozed: boolean;
     grafanaDashboardName: string;
     grafanaPanelID: number;
 }

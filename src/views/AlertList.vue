@@ -5,6 +5,7 @@
       <ul class="alert-list">
         <AlertLine 
           v-for="alert in alerts"
+          v-bind:class="{ snoozed: alert.wasSnoozed }"
           :key="alert.topic"
           :alert="alert"
           :topic="topic" />
@@ -56,6 +57,7 @@ export default class AlertList extends Vue {
     const events = await BackendApi.events(this.topic);
     const alerts: Alert[] = events.map((event) => {
       return {
+        id: event.id,
         message: event.state.message,
         title: event.state.title,
         subtitle: event.state.subtitle,
@@ -66,11 +68,13 @@ export default class AlertList extends Vue {
         taskName: event.state.details.TaskName,
         tags: event.state.details.Tags,
         fields: event.state.details.Fields,
+        wasSnoozed: event.state.wasSnoozed,
         grafanaDashboardName: event.state.details.GrafanaDashboardName,
         grafanaPanelID: event.state.details.GrafanaPanelID,
       };
     });
-    this.alerts = alerts.sort((a: Alert, b: Alert) => ColorUtil.states[b.level] - ColorUtil.states[a.level]);
+    this.alerts = alerts.sort((a: Alert, b: Alert) => Number(a.wasSnoozed) - Number(b.wasSnoozed)
+     || ColorUtil.states[b.level] - ColorUtil.states[a.level]);
   }
   // endregion
 }
@@ -96,6 +100,10 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.snoozed {
+  opacity: 0.5;
 }
 
 </style>
