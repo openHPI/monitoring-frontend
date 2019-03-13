@@ -2,7 +2,7 @@
   <li 
     class="alert" 
     :style="{ 'background-color': alert.backgroundColor }"
-    @keyup.esc="showTaskVariablesModal = false; showSnoozeModal = false" tabindex="0">
+    @keyup.esc="showTaskVariablesModal = false; showSnoozeModal = false; showCreateTaskModal = false" tabindex="0">
     <div class="icon-container">
       <img class="icon" :src="`img/${topic}.svg`" />
     </div>
