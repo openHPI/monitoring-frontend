@@ -13,23 +13,28 @@
       <img v-else class="icon" src="img/up-arrow.svg" />
     </a>
     <div v-if="!collapsed" class="alert-details">
-      <h3>Tags</h3>
-      <ul class="server-info">
-        <li v-for="tag in Object.keys(alert.tags)" :key="tag">
-          <strong>{{tag}}</strong>: {{alert.tags[tag]}}
-        </li>
-      </ul>
-      <h3>Alert Details</h3>
-      <ul class="server-info">
-        <li v-for="field in Object.keys(alert.fields)" :key="field">
-          <strong>{{field}}</strong>: {{alert.fields[field]}}
-        </li>
-      </ul>
+      <div class="alert-info">
+        <h3>Tags</h3>
+        <ul class="server-info">
+          <li v-for="tag in Object.keys(alert.tags)" :key="tag">
+            <strong>{{tag}}</strong>: {{alert.tags[tag]}}
+          </li>
+        </ul>
+        <h3>Alert Details</h3>
+        <ul class="server-info">
+          <li v-for="field in Object.keys(alert.fields)" :key="field">
+            <strong>{{field}}</strong>: {{alert.fields[field]}}
+          </li>
+        </ul>
+      </div>
+      <iframe v-if="alert.tags['fqdn'] && alert.grafanaDashboardName && alert.grafanaPanelID" class="grafana"
+       :src="`${config.baseURL}/grafana/d-solo/000000001/${alert.grafanaDashboardName}?refresh=5s&orgId=1&var-fqdn=${alert.tags['fqdn']}&panelId=${alert.grafanaPanelID}`"></iframe>
+      <div v-else class="grafana">No Grafana Dashboard available</div>
     </div>
     <div v-if="!collapsed" class="alert-buttons">
       <button v-if="alert.wasSnoozed" @click="unsnoozeAlert">Unsnooze</button>
       <button v-else @click="showSnoozeModal = true">Snooze ...</button>
-      <button @click="openGrafana">Open in Grafana</button>
+      <button @click="openGrafana" :disabled="!(alert.tags['fqdn'] && alert.grafanaDashboardName)">Open in Grafana</button>
       <button @click="openMnemosyne">Open in Mnemosyne</button>
       <button @click="showTaskVariablesModal = true">Settings</button>
     </div>
@@ -56,6 +61,11 @@ import config from '@/config';
   components: {
     TaskVariablesModal,
     SnoozeModal,
+  },
+  data() {
+    return {
+       config,
+    };
   },
 })
 export default class AlertLine extends Vue {
@@ -91,7 +101,8 @@ export default class AlertLine extends Vue {
 
   private openGrafana(): void {
     window.open(
-      `https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`,
+      `${config.baseURL}/grafana/d/000000001/${this.alert.grafanaDashboardName}
+      ?orgId=1&var-fqdn=${this.alert.tags.fqdn}`,
       '_blank',
     );
   }
@@ -183,6 +194,28 @@ h3:first-child {
 
 .alert-buttons button:focus {
   outline: none;
+}
+
+.alert-info {
+  float: left;
+  width: 29%;
+}
+
+.grafana {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+  height: 270px;
+  width: 70%;
+  border-radius: 10px;
+  border: 3px solid #202123;
+  background-color: #202123;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 </style>
