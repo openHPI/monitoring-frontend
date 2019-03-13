@@ -27,12 +27,14 @@
           </li>
         </ul>
       </div>
-      <iframe v-if="alert.tags['fqdn']" class="grafana" :src="`https://dev.xikolo.de/grafana/d-solo/000000001/${alert.grafanaDashboardName}?refresh=5s&orgId=1&var-fqdn=${alert.tags['fqdn']}&panelId=${alert.grafanaPanelID}`"></iframe>
+      <iframe v-if="alert.tags['fqdn'] && alert.grafanaDashboardName && alert.grafanaPanelID" class="grafana"
+       :src="`${config.baseURL}/grafana/d-solo/000000001/${alert.grafanaDashboardName}?refresh=5s&orgId=1&var-fqdn=${alert.tags['fqdn']}&panelId=${alert.grafanaPanelID}`"></iframe>
+      <div v-else class="grafana">No Grafana Dashboard available</div>
     </div>
     <div v-if="!collapsed" class="alert-buttons">
       <button v-if="alert.wasSnoozed" @click="unsnoozeAlert">Unsnooze</button>
       <button v-else @click="showSnoozeModal = true">Snooze ...</button>
-      <button @click="openGrafana">Open in Grafana</button>
+      <button @click="openGrafana" :disabled="!(alert.tags['fqdn'] && alert.grafanaDashboardName)">Open in Grafana</button>
       <button @click="openMnemosyne">Open in Mnemosyne</button>
       <button @click="showTaskVariablesModal = true">Settings</button>
     </div>
@@ -59,6 +61,11 @@ import config from '@/config';
   components: {
     TaskVariablesModal,
     SnoozeModal,
+  },
+  data() {
+    return {
+       config,
+    };
   },
 })
 export default class AlertLine extends Vue {
@@ -94,7 +101,8 @@ export default class AlertLine extends Vue {
 
   private openGrafana(): void {
     window.open(
-      `https://dev.xikolo.de/grafana/d-solo/000000001/generic-physical-host?orgId=1&var-fqdn=${this.$props.alert.fqdn}`,
+      `${config.baseURL}/grafana/d/000000001/${this.alert.grafanaDashboardName}
+      ?orgId=1&var-fqdn=${this.alert.tags.fqdn}`,
       '_blank',
     );
   }
@@ -194,12 +202,20 @@ h3:first-child {
 }
 
 .grafana {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   float: right;
   height: 270px;
   width: 70%;
   border-radius: 10px;
   border: 3px solid #202123;
   background-color: #202123;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 </style>
