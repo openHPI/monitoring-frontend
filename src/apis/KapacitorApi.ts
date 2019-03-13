@@ -25,6 +25,12 @@ export default class KapacitorApi {
         return responseJSON.tasks;
     }
 
+    public static async templates(): Promise<KapacitorTask[]> {
+        const response = await fetch(`http://82.140.0.78:9092/kapacitor/v1/templates`);
+        const responseJSON = await response.json();
+        return responseJSON.templates;
+    }
+
     public static async updateTaskVariables(taskName: string, taskVariables: KapacitorTaskVariables): Promise<string> {
         const taskURL = `http://82.140.0.78:9092/kapacitor/v1/tasks/${taskName}`;
 
