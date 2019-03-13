@@ -2,6 +2,7 @@
   <div class="alerts">
     <Header :title="topic" />
     <main>
+      <input type="text" class="searchbar" placeholder="Search Alerts" @input="searchAlerts" />
       <ul class="alert-list">
         <AlertLine 
           v-for="alert in alerts"
@@ -16,6 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import Fuse from 'fuse.js';
 import Component from 'vue-class-component';
 import Header from '@/components/Header.vue';
 import AlertLine from '@/components/AlertLine.vue';
@@ -41,16 +43,19 @@ export default class AlertList extends Vue {
 
   // region private members
   private topic: string = '';
+  private allAlerts: Alert[] = [];
   private alerts: Alert[] = [];
+  private fuse!: Fuse<Alert>;
   // endregion
 
   // region constructor
   // endregion
 
   // region private methods
-  private mounted() {
+  private async mounted() {
     this.topic = this.$route.params.topic;
-    this.fetchAlerts();
+    await this.fetchAlerts();
+    this.initializeSearchbar();
   }
 
   private async fetchAlerts(): Promise<void> {
@@ -71,8 +76,38 @@ export default class AlertList extends Vue {
         wasSnoozed: event.state.wasSnoozed,
       };
     });
-    this.alerts = alerts.sort((a: Alert, b: Alert) => Number(a.wasSnoozed) - Number(b.wasSnoozed)
+    this.allAlerts = alerts.sort((a: Alert, b: Alert) => Number(a.wasSnoozed) - Number(b.wasSnoozed)
      || ColorUtil.states[b.level] - ColorUtil.states[a.level]);
+    this.alerts = this.allAlerts;
+  }
+
+  private initializeSearchbar() {
+    const options: any = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: [
+        "message",
+        "title",
+        "subtitle",
+        "level",
+        "taskName",
+        "tags",
+        "fields"
+      ]
+    };
+    this.fuse = new Fuse(this.allAlerts, options);
+  }
+
+  private searchAlerts(e: any) {
+    if (e.target.value === '') {
+      this.alerts = this.allAlerts;
+      return;
+    }
+    this.alerts = this.fuse.search(e.target.value);
   }
   // endregion
 }
@@ -89,6 +124,14 @@ export default class AlertList extends Vue {
 
 main {
   overflow: scroll;
+}
+
+.searchbar {
+  margin: 15px 30px;
+  width: calc(100% - 100px);
+  font-size: 23px;
+  padding: 20px;
+  color: #363533;
 }
 
 .alert-list {
