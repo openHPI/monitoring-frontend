@@ -90,14 +90,14 @@ export default class AlertList extends Vue {
       maxPatternLength: 32,
       minMatchCharLength: 1,
       keys: [
-        "message",
-        "title",
-        "subtitle",
-        "level",
-        "taskName",
-        "tags",
-        "fields"
-      ]
+        'message',
+        'title',
+        'subtitle',
+        'level',
+        'taskName',
+        'tags',
+        'fields',
+      ],
     };
     this.fuse = new Fuse(this.allAlerts, options);
   }
