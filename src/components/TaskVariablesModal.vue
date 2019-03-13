@@ -151,6 +151,8 @@ export default class TaskVariablesModal extends Vue {
 
 .modal-body {
   margin: 20px 0;
+  height: 500px;
+  overflow: scroll;
 }
 
 .modal-footer {
