@@ -6,7 +6,11 @@
     <div class="icon-container">
       <img class="icon" :src="`img/${topic}.svg`" />
     </div>
-    <div class="alert-message">{{ alert.title }}<br>{{ alert.subtitle }}<br>{{ alert.subsubtitle }}</div>
+    <div class="alert-message">
+      <p class="title">{{ alert.title }}</p>
+      <p class="subtitle">{{ alert.subtitle }}</p>
+      <p class="subsubtitle">{{ alert.subsubtitle }}</p>
+    </div>
     <div class="alert-date">{{ alert.time }}</div>
     <a @click="toggleCollapse" href="#" class="icon-container">
       <img v-if="collapsed" class="icon" src="img/down-arrow.svg" />
@@ -139,6 +143,20 @@ export default class AlertLine extends Vue {
 .alert-message {
   font-size: 30px;
   word-break: break-all;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.alert-message .title {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.alert-message .subtitle,
+.alert-message .subsubtitle {
+  margin-top: 0px;
+  margin-bottom: 3px;
+  font-size: 20px;
 }
 
 .alert-date {
