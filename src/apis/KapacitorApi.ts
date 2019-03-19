@@ -13,13 +13,6 @@ export default class KapacitorApi {
     // endregion
 
     // region public methods
-    public static async alertLevel(topicName: string): Promise<string> {
-        const response = await fetch(`${config.kapacitorURL}/kapacitor/v1/alerts/topics`);
-        const topics = await response.json();
-        const test = topics.topics.find((topic: any) => topic.id === topicName);
-        return test ? test.level : 'OK';
-    }
-
     public static async tasks(): Promise<KapacitorTask[]> {
         const response = await fetch(`${config.kapacitorURL}/kapacitor/v1/tasks`);
         const responseJSON = await response.json();
