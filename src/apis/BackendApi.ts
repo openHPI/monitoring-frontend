@@ -26,8 +26,8 @@ export default class BackendApi {
             return 'OK';
         }
 
-        const containsCriticalEvent = topic.events.find((event: KapacitorEvent) => event.state.level === 'CRITICAL');
-        return containsCriticalEvent ? 'CRITICAL' : 'WARNING';
+        const criticalEvent = topic.events.find((event: KapacitorEvent) => event.state.level === 'CRITICAL');
+        return criticalEvent ? 'CRITICAL' : 'WARNING';
     }
 
     public static async snoozeEvent(eventId: string, days: number): Promise<void> {
