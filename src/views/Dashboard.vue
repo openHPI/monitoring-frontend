@@ -18,7 +18,7 @@ import Component from 'vue-class-component';
 import Header from '@/components/Header.vue';
 import TopicTile from '@/components/TopicTile.vue';
 
-import KapacitorApi from '@/apis/KapacitorApi';
+import BackendApi from '@/apis/BackendApi';
 
 @Component({
   components: {
@@ -68,7 +68,7 @@ export default class Dashboard extends Vue {
 
   private updateAlertLevels(): void {
     this.topics.forEach((topic) => {
-      KapacitorApi.alertLevel(topic.tag).then((alertLevel) => topic.alertLevel = alertLevel);
+      BackendApi.alertLevel(topic.tag).then((alertLevel) => topic.alertLevel = alertLevel);
     });
   }
   // endregion
