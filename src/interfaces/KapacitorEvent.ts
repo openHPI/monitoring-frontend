@@ -29,8 +29,6 @@ export default interface KapacitorEvent {
             Time: string;
             Duration: number
             Message: string;
-            GrafanaDashboardName: string;
-            GrafanaPanelID: number;
         };
         time: string;
         duration: string;
