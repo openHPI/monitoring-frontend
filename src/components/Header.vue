@@ -49,6 +49,10 @@ header {
     max-height: 100%;
 }
 
+.header-icon-link {
+    max-height: 72px;
+}
+
 .header-title {
     color: white;
     text-align: center;
