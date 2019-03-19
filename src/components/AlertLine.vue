@@ -2,7 +2,7 @@
   <li 
     class="alert" 
     :style="{ 'background-color': alert.backgroundColor }"
-    @keyup.esc="showTaskVariablesModal = false; showSnoozeModal = false" tabindex="0">
+    @keyup.esc="showTaskVariablesModal = false; showSnoozeModal = false; showCreateTaskModal = false" tabindex="0">
     <div class="icon-container">
       <img class="icon" :src="`img/${topic}.svg`" />
     </div>
@@ -41,9 +41,11 @@
     <SnoozeModal v-if="showSnoozeModal" @close="showSnoozeModal = false" @snooze="alert.wasSnoozed = true"
      :eventId="alert.id" :backgroundColor="alert.backgroundColor">
     </SnoozeModal>
-    <TaskVariablesModal v-if="showTaskVariablesModal" @close="showTaskVariablesModal = false"
+    <TaskVariablesModal v-if="showTaskVariablesModal" @close="showTaskVariablesModal = false" @createTask="showCreateTaskModal = true"
      :taskName="alert.taskName" :backgroundColor="alert.backgroundColor">
     </TaskVariablesModal>
+    <CreateTaskModal v-if="showCreateTaskModal" @close="showCreateTaskModal = false">
+    </CreateTaskModal>
   </li>
 </template>
 
@@ -54,6 +56,7 @@ import { Component, Prop } from 'vue-property-decorator';
 import Alert from '@/interfaces/Alert';
 import TaskVariablesModal from '@/components/TaskVariablesModal.vue';
 import SnoozeModal from '@/components/SnoozeModal.vue';
+import CreateTaskModal from '@/components/CreateTaskModal.vue';
 import BackendApi from '@/apis/BackendApi.ts';
 import config from '@/config';
 
@@ -61,6 +64,7 @@ import config from '@/config';
   components: {
     TaskVariablesModal,
     SnoozeModal,
+    CreateTaskModal,
   },
   data() {
     return {
@@ -83,6 +87,7 @@ export default class AlertLine extends Vue {
   // region private members
   private collapsed: boolean = true;
   private showTaskVariablesModal: boolean = false;
+  private showCreateTaskModal: boolean = false;
   private showSnoozeModal: boolean = false;
   // endregion
 

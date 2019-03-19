@@ -2,17 +2,20 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container" :style="{ 'background-color': backgroundColor }">
+        <div class="modal-container">
 
           <div class="modal-header">
-              <h1 class="header-title">Settings</h1>
+              <h1 class="header-title">Create new Task</h1>
           </div>
 
           <div class="modal-body">
-            <label>Task:</label>
-            <select v-model="selectedTaskName" @change="updateTaskVariables">
-              <option v-for="task in tasks" :key="task.id" :value="task.id">{{ task.id }}</option>
+            <label>Template:</label>
+            <select v-model="selectedTemplateName" @change="fetchTemplateVariables">
+              <option v-for="template in templates" :key="template.id" :value="template.id">{{ template.id }}</option>
             </select>
+
+            <label for="taskNameInput">Task Name:</label>
+            <input name="taskNameInput" v-model="taskName" type="text">
 
             <slot v-for="taskVariableKey in getFilteredTaskVariableKeys()" name="body">
               <label :key="taskVariableKey + 'label'" :for="taskVariableKey + 'input'">{{ toFreeText(taskVariableKey) }}:</label>
@@ -20,19 +23,15 @@
                :key="taskVariableKey + 'input'" v-model="taskVariables[taskVariableKey].value" type="text">
               <input v-if="taskVariables[taskVariableKey].type === 'float' || taskVariables[taskVariableKey].type === 'int' || taskVariables[taskVariableKey].type === 'duration'"
                :key="taskVariableKey + 'input'" v-model.number="taskVariables[taskVariableKey].value" type="number">
+              <input v-if="taskVariables[taskVariableKey].type === 'list'"
+               :key="taskVariableKey + 'input'" v-model="groupByValues" type="text">
             </slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-default-button" @click="saveTaskVariables">
-                Save
-              </button>
-              <button class="modal-default-button" @click="deleteTask">
-                Delete Task
-              </button>
               <button class="modal-default-button" @click="createTask">
-                Create new Task
+                Create Task
               </button>
             </slot>
           </div>
@@ -50,12 +49,11 @@ import Alert from '@/interfaces/Alert';
 import KapacitorTask from '@/interfaces/KapacitorTask';
 import KapacitorTaskVariables from '@/interfaces/KapacitorTaskVariables';
 import KapacitorApi from '@/apis/KapacitorApi.ts';
+import KapacitorTaskVariable from '@/interfaces/KapacitorTaskVariable';
 
 @Component
-export default class TaskVariablesModal extends Vue {
+export default class CreateTaskModal extends Vue {
   // region properties
-  @Prop(String) public taskName!: string;
-  @Prop(String) public backgroundColor!: string;
   // endregion
 
   // region public members
@@ -65,9 +63,11 @@ export default class TaskVariablesModal extends Vue {
   // endregion
 
   // region private members
-  private tasks: KapacitorTask[] = [];
-  private selectedTaskName = this.taskName;
+  private templates: KapacitorTask[] = [];
+  private selectedTemplateName = '';
+  private taskName = '';
   private taskVariables: KapacitorTaskVariables = {};
+  private groupByValues = '';
   // endregion
 
   // region constructor
@@ -75,7 +75,7 @@ export default class TaskVariablesModal extends Vue {
 
   // region private methods
   private mounted() {
-    this.fetchTasks();
+    this.fetchTemplates();
   }
 
   private toFreeText(text: string): string {
@@ -85,40 +85,50 @@ export default class TaskVariablesModal extends Vue {
     return finalResult;
   }
 
-  private async fetchTasks(): Promise<void> {
-    this.tasks = await KapacitorApi.tasks();
-    this.updateTaskVariables();
+  private async fetchTemplates(): Promise<void> {
+    this.templates = await KapacitorApi.templates();
+    this.selectedTemplateName = this.templates[0].id;
+    this.fetchTemplateVariables();
   }
 
-  private async updateTaskVariables(): Promise<void> {
-    const selectedTask = this.tasks.find((task: KapacitorTask) => task.id === this.selectedTaskName);
-
-    if (selectedTask) {
-      this.taskVariables = selectedTask.vars;
-    }
+  private async fetchTemplateVariables(): Promise<void> {
+    this.taskVariables = await KapacitorApi.templateVariables(this.selectedTemplateName);
   }
 
-  private async saveTaskVariables(): Promise<void> {
+  private getGroupByObject(): KapacitorTaskVariable {
+    const groupByObject: KapacitorTaskVariable = {
+      type: 'list',
+      value: [],
+      description: '',
+    };
+
+    this.groupByValues.split(',').forEach((groupByValue) => {
+      const taskVariable: KapacitorTaskVariable = {
+        type: 'string',
+        value: groupByValue,
+        description: '',
+      };
+
+      if (Array.isArray(groupByObject.value)) {
+        groupByObject.value.push(taskVariable);
+      }
+    });
+
+    return groupByObject;
+  }
+
+  private async createTask(): Promise<void> {
     this.$emit('close');
 
-    await KapacitorApi.updateTaskVariables(this.selectedTaskName, this.taskVariables);
+    this.taskVariables.group_by = this.getGroupByObject();
+
+    await KapacitorApi.createTask(this.taskName, this.selectedTemplateName, this.taskVariables);
   }
 
   private getFilteredTaskVariableKeys(): string[] {
     return Object.keys(this.taskVariables).filter((taskVariableKey) => {
-      return !['group_by', 'morgothField', 'morgothScoreField'].includes(taskVariableKey);
+      return !['morgothField', 'morgothScoreField'].includes(taskVariableKey);
     });
-  }
-
-  private async deleteTask(): Promise<void> {
-    this.$emit('close');
-
-    await KapacitorApi.deleteTask(this.selectedTaskName);
-  }
-
-  private createTask(): void {
-    this.$emit('close');
-    this.$emit('createTask');
   }
   // endregion
 }
@@ -150,6 +160,7 @@ export default class TaskVariablesModal extends Vue {
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
+  background-color: #484f5d;
   }
 
 .modal-header h3 {
