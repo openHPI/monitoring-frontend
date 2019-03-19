@@ -110,7 +110,7 @@ export default class AlertLine extends Vue {
 
   private openGrafana(): void {
     window.open(
-      `${config.baseURL}/grafana/d/000000001/${this.alert.grafanaDashboardName}
+      `${config.baseURL}/grafana/d/${this.alert.grafanaDashboardName}
       ?orgId=1&var-fqdn=${this.alert.tags.fqdn}`,
       '_blank',
     );
