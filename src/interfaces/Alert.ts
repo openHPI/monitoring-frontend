@@ -16,5 +16,5 @@ export default interface Alert {
     taskName: string;
     wasSnoozed: boolean;
     grafanaDashboardName: string;
-    grafanaPanelID: number;
+    grafanaPanelID: string;
 }
