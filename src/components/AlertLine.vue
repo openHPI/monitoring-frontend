@@ -32,7 +32,7 @@
         </ul>
       </div>
       <iframe v-if="alert.tags['fqdn'] && alert.grafanaDashboardName && alert.grafanaPanelID" class="grafana"
-       :src="`${config.baseURL}/grafana/d-solo/000000001/${alert.grafanaDashboardName}?refresh=5s&orgId=1&var-fqdn=${alert.tags['fqdn']}&panelId=${alert.grafanaPanelID}`"></iframe>
+       :src="`${config.baseURL}/grafana/d-solo/${alert.grafanaDashboardName}?refresh=5s&orgId=1&var-fqdn=${alert.tags['fqdn']}&panelId=${alert.grafanaPanelID}`"></iframe>
       <div v-else class="grafana">No Grafana Dashboard available</div>
     </div>
     <div v-if="!collapsed" class="alert-buttons">
