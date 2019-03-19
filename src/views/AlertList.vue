@@ -127,7 +127,7 @@ export default class AlertList extends Vue {
 }
 
 main {
-  overflow: scroll;
+  overflow: auto;
 }
 
 .searchbar-container {
